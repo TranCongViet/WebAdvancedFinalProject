@@ -1,12 +1,11 @@
-//import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import { User } from '../src/layouts'
 
 function App() {
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-400">Hello, Vite + React + TailwindCSS!</h1>
-    </div>
-  );
+    <Routes>
+      <Route path="/*" element={<User />} />
+    </Routes>
+  )
 }
-
-export default App
+export default App;

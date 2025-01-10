@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { FadeLoader } from 'react-spinners';
@@ -30,7 +30,13 @@ export function LoginPage() {
             if (!error.response) {
                 setMessage('Server không phản hồi, vui lòng thử lại sau!');
             } else {
-                setMessage(error.response.data.message);
+                if (error.response.data.message == "Tài khoản chưa được xác thực.") {
+
+                    setMessage("Vui lòng kích hoạt tài khoản, chuyển hướng về trang kích hoạt sau 2s...")
+                    setTimeout(() => {
+                        navigate('/active-account');
+                    }, 2000);
+                }
             }
             setIsError(true);
         } finally {
@@ -40,12 +46,14 @@ export function LoginPage() {
 
     const handleGoogleLoginSuccess = async (response) => {
         const authorizationCode = response.credential;
+        console.log(authorizationCode)
         setLoading(true);
         try {
             // Gửi mã authorizationCode đến backend để lấy access_token
-            const result = await axios.post(`https://movies-recommendation-api-xhpa.onrender.com/user/google`, {
-                googleToken: authorizationCode,
+            const result = await axios.post(`https://movies-recommendation-api-xhpa.onrender.com/google`, {
+                googleTokenId: authorizationCode,
             });
+
             login(result.data.token, result.data.username);
         } catch (error) {
             console.error("Đăng nhập thất bại", error);
@@ -118,6 +126,11 @@ export function LoginPage() {
                                             {...register('password', { required: 'Mật khẩu là bắt buộc' })}
                                         />
                                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                                    </div>
+                                    <div className="flex justify-end">
+                                        <Link to="/forgot-password" className="text-sm font-medium hover:underline">
+                                            Quên mật khẩu?
+                                        </Link>
                                     </div>
                                     <button
                                         type="submit"

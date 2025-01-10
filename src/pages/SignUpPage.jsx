@@ -48,7 +48,7 @@ export function SignUpPage() {
                     <FadeLoader />
                 </div>
             )}
-            <section className="max-w-full w-full flex items-center justify-center">
+            <section className="max-w-full w-full flex items-center h-screen justify-center">
                 <div className={`w-full flex flex-col items-center justify-center px-6 py-8 lg:py-0 `}>
                     <div className="w-full bg-white rounded-lg shadow  xl:p-0 sm:max-w-md ">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ">
@@ -81,7 +81,7 @@ export function SignUpPage() {
                                             required: 'Tên đăng nhập là bắt buộc',
                                             minLength: {
                                                 value: 3,
-                                                message: 'Tên đăng nhập cần ít nhất 6 ký tự',
+                                                message: 'Tên đăng nhập cần ít nhất 3 ký tự',
                                             }
                                         })}
                                     />
@@ -118,7 +118,13 @@ export function SignUpPage() {
                                         id="password"
                                         placeholder="••••••••"
                                         className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                        {...register('password', { required: 'Password is required' })}
+                                        {...register('password', {
+                                            required: 'Mật khẩu là bắt buộc',
+                                            minLength: {
+                                                value: 4,
+                                                message: 'Mật khẩu phải có độ dài từ 4 đến 255 ký tự',
+                                            }
+                                        })}
                                     />
                                     {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
                                 </div>

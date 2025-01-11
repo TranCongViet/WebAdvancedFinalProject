@@ -3,7 +3,7 @@ import { useAuth } from '../../context/authcontext.jsx';
 export function Header() {
     const { logout, user } = useAuth();
     return (
-        <header className="bg-slate-400 max-w-full w-full sticky top-0 left-0 ">
+        <header className="bg-slate-400 max-w-full w-full top-0 left-0 ">
             <div className="container mx-auto flex justify-between items-center py-4 px-4">
                 <Link to="/" >
                     <div className="text-2xl font-bold text-blue-600">

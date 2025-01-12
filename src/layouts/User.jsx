@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import {
     HomePage, NotFound, SignUpPage,
-    LoginPage, ForgotPasswordPage, ActiveAccountPage
+    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage
 } from '../pages'
 import { Header, Footer } from '../components/layout'
 export function User() {
@@ -10,10 +10,12 @@ export function User() {
             <Header />
             <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/home" element={<HomePage />} />
                 <Route path="/signUp" element={<SignUpPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/active-account" element={<ActiveAccountPage />} />
+                <Route path="/movie/:id" element={<DetailPage />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

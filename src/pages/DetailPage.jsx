@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MovieService } from '../utils/api';
-import { CastCard, Review, TrailerDetail } from '../components';
+import { CastCard, Review, TrailerDetail, MoviesCard } from '../components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { FadeLoader } from 'react-spinners';
 import { useAuth } from '../context/AuthContext';
+import { toast } from "react-toastify";
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS của react-toastify
 
 export function DetailPage() {
     const { id } = useParams();
@@ -12,26 +16,58 @@ export function DetailPage() {
     const { jwtToken, user } = useAuth();
     const [commentAdded, setCommentAdded] = useState(false);
     const [Recomendation, setRecomendation] = useState(null);
-
+    const [checkIsWatchList, setCheckIsWatchList] = useState(false);
+    const [checkIsLiked, setCheckIsLiked] = useState(false);
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+
+                const movieDetails = await fetchMovieDetails(id);
+
+                if (movieDetails && movieDetails.genres) {
+
+                    const genreNames = movieDetails.genres.map(genre => genre.name);
+
+                    await recommendationByGenres(genreNames);
+                }
+                const check1 = await MovieService.checkIsWatchList(id, jwtToken);
+                setCheckIsWatchList(check1.data.data);
+                const check2 = await MovieService.checkIsLiked(id, jwtToken);
+                setCheckIsLiked(check2.data.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         const fetchMovieDetails = async (id) => {
-            setLoading(true);
             const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
-                console.log("checkvar", data.data)
+                console.log("checkvar", data.data);
                 setDetail(data.data);
+                return data.data; // Trả về dữ liệu chi tiết phim
             }
-            setLoading(false);
-        }
-        fetchMovieDetails(id);
+            return null;
+        };
+
+        const recommendationByGenres = async (genres) => {
+            const data = await MovieService.recommendationByGenres(genres);
+            if (data) {
+                console.log("checkvar2", data.data.data.content);
+                setRecomendation(data.data.data.content);
+            }
+        };
+        fetchData();
     }, []);
 
+
     useEffect(() => {
         const fetchMovieDetails = async (id) => {
             setLoading(true);
             const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
-                console.log("checkvar", data.data)
                 setDetail(data.data);
             }
             setLoading(false);
@@ -50,7 +86,6 @@ export function DetailPage() {
             return;
         }
         const data = await MovieService.addComment(detail.id, newComment, newRating, jwtToken);
-        console.log("Test data", data);
         if (data.status == "error") {
             alert("Bạn đã bình luận và đánh giá rồi!");
             setNewComment("");
@@ -79,6 +114,10 @@ export function DetailPage() {
     );
     const handleClick = (action) => {
         console.log(`${action} button clicked`);
+        if (action == "handleRemoveWatchList") handleRemoveWatchList();
+        if (action == "handleLike") handleLike();
+        if (action == "handleUnlike") handleUnlike();
+        if (action == "handleAddWatchList") handleAddWatchList();
         // Thực hiện hành động khác tại đây
     };
     const handleRemove = async () => {
@@ -90,7 +129,41 @@ export function DetailPage() {
             console.error("Lỗi khi gọi API: ", error);
         }
     }
-
+    const handleRemoveWatchList = async () => {
+        try {
+            const response = await MovieService.removeWatchList(detail.id, jwtToken);
+            setCheckIsWatchList(false);
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+        };
+    }
+    const handleUnlike = async () => {
+        try {
+            const response = await MovieService.removeFavoriteList(detail.id, jwtToken);
+            setCheckIsLiked(false);
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+            setCheckIsLiked(false);
+        };
+    }
+    const handleAddWatchList = async () => {
+        try {
+            const response = await MovieService.addMovieWatchList(detail.id, jwtToken);
+            setCheckIsWatchList(true);
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+        };
+    }
+    const handleLike = async () => {
+        try {
+            console.log("handle like");
+            const response = await MovieService.addFavoriteList(detail.id, jwtToken);
+            setCheckIsLiked(true);
+            toast.success("Thêm vào favorite list! 🎉");
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+        };
+    }
     if (loading) {
         return <SkeletonLoader />;
     }
@@ -100,6 +173,7 @@ export function DetailPage() {
                 {/* <div className="mx-auto text-black p-8 bg-cover bg-center sm:h-screen bg-no-repeat bg-slate-300" style={{
                     backgroundImage: `url('https://image.tmdb.org/t/p/original${detail.backdrop_path}')`,
                 }}> */}
+                <ToastContainer />
                 <div className="mx-auto text-black p-8 bg-cover bg-center  bg-slate-300" >
                     <div className="">
                         <div className="flex flex-col sm:flex-row items-start gap-6">
@@ -119,28 +193,30 @@ export function DetailPage() {
                                 </p>
                                 <p className="text-sm mt-1">Rating: {detail.voteAverage}/10</p>
 
-                                <div className="flex items-center gap-4 mt-4">
+                                <div className={`flex items-center gap-4 mt-4 `}>
                                     <button
-                                        className={`flex items-center px-4 py-2 text-white rounded-full focus:outline-none ${jwtToken
+                                        className={`flex items-center px-4 py-2 text-white rounded-full focus:outline-none ${!jwtToken ? "hidden" : ""} ${jwtToken
                                             ? "bg-blue-600 hover:bg-blue-800"
                                             : "bg-blue-400 cursor-not-allowed"
                                             }`}
                                         disabled={!jwtToken} // Vô hiệu hóa nếu jwtToken là null
-                                        onClick={() => jwtToken && handleClick("Add to Watchlist")} // Chỉ chạy hàm nếu jwtToken tồn tại
+                                        onClick={() => jwtToken && handleClick(checkIsWatchList ? "handleRemoveWatchList" : "handleAddWatchList")} // Chạy hàm với nội dung phù hợp
                                     >
-                                        <i className="fas fa-plus mr-2"></i> Add to Watchlist
+                                        <i className={`fas ${checkIsWatchList ? "fa-minus" : "fa-plus"}`}></i>
                                     </button>
+
                                     <button
-                                        className={`flex items-center px-4 py-2 text-white rounded-full focus:outline-none ${jwtToken
+                                        className={`flex items-center px-4 py-2 text-white rounded-full focus:outline-none ${!jwtToken ? "hidden" : ""} ${jwtToken
                                             ? "bg-gray-600 hover:bg-gray-800"
                                             : "bg-gray-400 cursor-not-allowed"
                                             }`}
-                                        disabled={!jwtToken}
-                                        onClick={() => jwtToken && handleClick("Like")}
+                                        disabled={!jwtToken} // Vô hiệu hóa nếu jwtToken là null
+                                        onClick={() => jwtToken && handleClick(checkIsLiked ? "handleUnlike" : "handleLike")} // Chạy hàm với nội dung phù hợp
                                     >
-                                        <i className="fas fa-heart mr-2"></i> Like
+                                        <i
+                                            className={`fas fa-heart ${checkIsLiked ? "text-red-600" : "text-gray-400"}`}
+                                        ></i>
                                     </button>
-
                                     <button className="flex items-center px-4 py-2 text-white rounded-full focus:outline-none bg-red-600 hover:bg-red-800 "
                                         onClick={() => setSelectedMovie(detail.trailers[0].key)}>
                                         <i className="fas fa-play mr-2"></i> Play Trailer
@@ -173,11 +249,17 @@ export function DetailPage() {
                         Recommendation
                     </h1>
                 </div>
-                {/* <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
-                    {loading1
-                        ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-                        : <MoviesCard movies={popularMovies} />}
-                </div>  */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
+                    {
+                        Recomendation === null
+                            ? (
+                                <div className="h-screen inset-0 flex items-center justify-center bg-gray-100 ">
+                                    <FadeLoader />
+                                </div>
+                            )
+                            : <MoviesCard movies={Recomendation} />
+                    }
+                </div>
                 <Review reviews={detail.reviews} newComment={newComment} newRating={newRating}
                     setNewComment={setNewComment} setNewRating={setNewRating} handleAddComment={handleAddComment} handleRemove={handleRemove}></Review>
             </div>

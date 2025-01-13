@@ -1,9 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export function SearchBar() {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
+    const [selectedOption, setSelectedOption] = useState(
+        localStorage.getItem("searchType") || "Search"
+    ); // Lấy giá trị từ localStorage hoặc giá trị mặc định
+
+    useEffect(() => {
+        localStorage.setItem("searchType", selectedOption); // Cập nhật localStorage mỗi khi selectedOption thay đổi
+    }, [selectedOption]);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -12,11 +20,19 @@ export function SearchBar() {
             alert("Please enter a search term.");
             return;
         }
-
-        navigate(`/search?query=${query}&page=1`);
-        setQuery("");
+        console.log("Testing", selectedOption); // Kiểm tra loại tìm kiếm hiện tại
+        if (selectedOption === "Search") {
+            navigate(`/search?query=${query}&page=1`);
+        } else if (selectedOption === "LLM Movie Search") {
+            navigate(`/moviesearch?query=${query}`);
+        } else if (selectedOption === "AI Navigation") {
+            navigate(`/ainavigation?query=${query}`);
+        }
+        setQuery(""); // Xóa nội dung tìm kiếm sau khi gửi
     };
-
+    const handleChange = (e) => {
+        setSelectedOption(e.target.value);
+    };
     const TypeSearch = ["Search", "LLM Movie Search", "AI Navigation"];
 
     return (
@@ -26,6 +42,8 @@ export function SearchBar() {
         >
             <div className="w-full md:w-auto">
                 <select
+                    value={selectedOption} // Liên kết với trạng thái
+                    onChange={handleChange} // Xử lý khi có sự thay đổi
                     className="w-full md:w-[120px] h-10 text-black bg-gray-50 rounded-lg focus:outline-none"
                 >
                     {TypeSearch.map((s, i) => (

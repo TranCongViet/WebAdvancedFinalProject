@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 export function Review({ reviews, newComment, newRating, setNewComment, setNewRating, handleAddComment, handleRemove }) {
 
-    console.log("Test review", reviews);
     const { user } = useAuth();
     return (
         <div className="bg-gray-500 text-white p-6 rounded-lg shadow-lg">

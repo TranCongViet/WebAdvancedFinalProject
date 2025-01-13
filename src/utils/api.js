@@ -118,6 +118,38 @@ export const MovieService = {
             throw error;
         }
     },
+    addMovieWatchList: async (movie_id, token) => {
+        try {
+            const data = await axios.post(`${API_URL}/movie-watch-list`, {
+                movieId: movie_id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error adding event listener:", error);
+            throw error;
+        }
+    },
+    addFavoriteList: async (movie_id, token) => {
+        try {
+            const data = await axios.post(`${API_URL}/movie-favorite-list`, {
+                movieId: movie_id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error adding favorite list:", error);
+            throw error;
+        }
+    },
 
     fetchPersonByID: async (id) => {
         try {
@@ -173,15 +205,59 @@ export const MovieService = {
     },
     recommendationByGenres: async (genres) => {
         try {
+            console.log("check genres", genres);
+            const temp = genres.map((genre) => genre.name);
             const data = await axios.post(`${API_URL}/movie/filter`, {
                 type: "OR",
-                keywords: [genres.join(",")],
-                genres: [genres.join(",")],
+                genres: ["Horror", "Thriller", "Science", "Fiction"]
             });
-            return data.data
+            return data
         }
         catch (error) {
             console.error("Error fetching recommendation by genres:", error);
+            throw error;
+        }
+    },
+    searchMovies: async (query, page) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie/search`, {
+                params: {
+                    title: query,
+                    page: page
+                }
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error searching movies:", error);
+            throw error;
+        }
+    },
+    checkIsWatchList: async (movie_id, token) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie-watch-list/${movie_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error checking watch list:", error);
+            throw error;
+        }
+    },
+    checkIsLiked: async (movie_id, token) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie-favorite-list/${movie_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error checking favorite list:", error);
             throw error;
         }
     }

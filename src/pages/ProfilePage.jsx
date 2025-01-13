@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MovieService } from '../utils/api';
 import { Link } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
@@ -46,7 +46,7 @@ export function ProfilePage() {
     const getAllMovieWatchList = async () => {
         try {
             setLoadingWatch(true);
-            const data = await MovieService.getAllMovieWatchList(jwtToken);  // Detail
+            const data = await MovieService.getAllMovieWatchList(jwtToken);
             if (data) {
                 setWatchList(data.data.content);
             }
@@ -61,10 +61,8 @@ export function ProfilePage() {
 
     const handleRemoveWatchList = async (movieId) => {
         try {
-            // Gọi API xóa
             const response = await MovieService.removeWatchList(movieId, jwtToken);
             if (response.data.status === "success") {
-                // Nếu xóa thành công, gọi lại danh sách mới
                 getAllMovieWatchList();
             } else {
                 console.error("Failed to remove movie");
@@ -75,10 +73,8 @@ export function ProfilePage() {
     };
     const handleRemoveFavoriteList = async (movieId) => {
         try {
-            // Gọi API xóa
             const response = await MovieService.removeFavoriteList(movieId, jwtToken);
             if (response.data.status === "success") {
-                // Nếu xóa thành công, gọi lại danh sách mới
                 getAllMovieFavoriteList();
             } else {
                 console.error("Failed to remove movie");
@@ -90,17 +86,15 @@ export function ProfilePage() {
     };
     const handleRemoveRatingList = async (movieId) => {
         try {
-            // Gọi API xóa
             const response = await MovieService.removeRatingList(movieId, jwtToken);
-            console.log(response);
+            console.log("Test", response);
             if (response.data.status === "success") {
-                // Nếu xóa thành công, gọi lại danh sách mới
-                getAllMovieFavoriteList();
+                getAllMovieRatingList();
             } else {
                 console.error("Failed to remove movie");
             }
         } catch (error) {
-            getAllMovieFavoriteList();
+            getAllMovieRatingList();
             console.error("Error removing movie:", error);
         }
     };
@@ -113,7 +107,7 @@ export function ProfilePage() {
         } else if (selected === 1) {
             getAllMovieWatchList();
         }
-    }, [selected]);  // Chỉ gọi khi selected thay đổi
+    }, [selected]);
 
 
     const links = [

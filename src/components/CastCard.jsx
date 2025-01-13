@@ -8,7 +8,7 @@ export function CastCard({ CastList }) {
                 className="bg-white shadow-xl rounded-lg overflow-hidden"
             >
                 <div className="relative w-full h-60 overflow-hidden ">
-                    <Link to={`/movie/${cast.id}`}>
+                    <Link to={`/person/${cast.id}`}>
                         <img
                             src={cast.profile_path
                                 ? `https://image.tmdb.org/t/p/w500${cast.profile_path}`
@@ -19,7 +19,7 @@ export function CastCard({ CastList }) {
                     </Link>
                 </div>
                 <div className="p-4">
-                    <Link to={`/movie/${cast.name}`}>
+                    <Link to={`/person/${cast.id}`}>
                         <h2 className="text-sm text-center font-semibold text-gray-800 truncate cursor-pointer hover:underline">{cast.name}</h2>
                     </Link>
                 </div>

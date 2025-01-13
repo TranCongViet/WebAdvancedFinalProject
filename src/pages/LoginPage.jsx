@@ -25,7 +25,7 @@ export function LoginPage() {
             });
             setMessage(response.data.message);
             setIsError(false);
-            login(response.data.access_token, response.data.username);
+            login(response.data.token, response.data.username);
         } catch (error) {
             if (!error.response) {
                 setMessage('Server không phản hồi, vui lòng thử lại sau!');

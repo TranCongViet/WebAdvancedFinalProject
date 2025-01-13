@@ -41,7 +41,37 @@ export const MovieService = {
             console.error("Error fetching detail movie by tmdb_id:", error);
             throw error;
         }
-    }
+    },
+
+    addComment: async (movie_id, content, rating, token) => {
+        try {
+            console.log("Check var", movie_id, content, rating, token);
+            const data = await axios.post(`${API_URL}/review`, {
+                content: content,
+                movieId: movie_id,
+                rating: rating
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data.data
+        }
+        catch (error) {
+            console.error("Error adding comment:", error);
+            throw error;
+        }
+    },
+    fetchPersonByID: async (id) => {
+        try {
+            const data = await axios.get(`${API_URL}/people/${id}`);
+            return data.data
+        }
+        catch (error) {
+            console.error("Error fetching person by ID:", error);
+            throw error;
+        }
+    },
 
     // searchByName: async (query, page) => {
     //     const server = localStorage.getItem('server');

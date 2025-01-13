@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MovieService } from '../utils/api';
-import { CastCard } from '../components';
+import { CastCard, Review } from '../components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { useAuth } from '../context/AuthContext';
 
 export function DetailPage() {
     const { id } = useParams();
     const [detail, setDetail] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { jwtToken } = useAuth();
+    const [commentAdded, setCommentAdded] = useState(false); // State theo dõi thay đổi
 
     useEffect(() => {
         const fetchMovieDetails = async (id) => {
@@ -15,13 +18,32 @@ export function DetailPage() {
             const data = await MovieService.fetchGetMoviesByTMDB_id(id);  // Detail
             if (data) {
                 setDetail(data.data);
-                console.log(data.data);
             }
             setLoading(false);
         }
         fetchMovieDetails(id);
-    }, [id]);
+    }, [id, commentAdded]);
 
+    const [newComment, setNewComment] = useState("");
+    const [newRating, setNewRating] = useState(0);
+
+    const handleAddComment = async () => {
+        if (newComment.trim() === "" || newRating === 0) {
+            alert("Vui lòng nhập bình luận và đánh giá!");
+            return;
+        }
+        const data = await MovieService.addComment(detail.id, newComment, newRating, jwtToken);
+        console.log("Test data", data);
+        if (data.status == "error") {
+            alert("Bạn đã bình luận và đánh giá rồi!");
+            setNewComment("");
+            setNewRating(0);
+            return;
+        }
+        setNewComment("");
+        setNewRating(0);
+        setCommentAdded(!commentAdded);
+    };
     const SkeletonLoader = () => (
         <div className="text-black p-8 bg-cover bg-center animate-pulse">
             <div className="container mx-auto">
@@ -45,8 +67,10 @@ export function DetailPage() {
     return (
         detail && (
             <div className=" ">
-                <div className="text-black p-8 bg-cover bg-center sm:h-screen" style={{ backgroundImage: `url('https://image.tmdb.org/t/p/original${detail.backdrop_path}')` }}>
-                    <div className="container mx-auto">
+                <div className="text-black p-8 bg-cover bg-center sm:h-screen" style={{
+                    backgroundImage: `url('https://image.tmdb.org/t/p/original${detail.backdrop_path}')`,
+                }}>
+                    <div className="container mx-auto ">
                         <div className="flex flex-col sm:flex-row items-start gap-6">
                             <div className="w-full sm:w-60 sm:h-full  mb-4 sm:mb-0">
                                 <img
@@ -91,6 +115,8 @@ export function DetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
                     <CastCard CastList={detail.credits.cast} />
                 </div>
+                <Review reviews={detail.reviews} newComment={newComment} newRating={newRating}
+                    setNewComment={setNewComment} setNewRating={setNewRating} handleAddComment={handleAddComment}></Review>
             </div>
         )
     );

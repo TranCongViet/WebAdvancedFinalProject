@@ -19,6 +19,7 @@ export function ProfilePage() {
         try {
             setLoadingRating(true);
             const data = await MovieService.getAllMovieRatingList(jwtToken);  // Detail
+            console.log(data);
             if (data) {
                 setRatingList(data.data.content);
             }
@@ -72,10 +73,26 @@ export function ProfilePage() {
             console.error("Error removing movie:", error);
         }
     };
-    const handleFavoriteList = async (movieId) => {
+    const handleRemoveFavoriteList = async (movieId) => {
         try {
             // Gọi API xóa
             const response = await MovieService.removeFavoriteList(movieId, jwtToken);
+            if (response.data.status === "success") {
+                // Nếu xóa thành công, gọi lại danh sách mới
+                getAllMovieFavoriteList();
+            } else {
+                console.error("Failed to remove movie");
+            }
+        } catch (error) {
+            getAllMovieFavoriteList();
+            console.error("Error removing movie:", error);
+        }
+    };
+    const handleRemoveRatingList = async (movieId) => {
+        try {
+            // Gọi API xóa
+            const response = await MovieService.removeRatingList(movieId, jwtToken);
+            console.log(response);
             if (response.data.status === "success") {
                 // Nếu xóa thành công, gọi lại danh sách mới
                 getAllMovieFavoriteList();
@@ -182,7 +199,7 @@ export function ProfilePage() {
                                         <p className="text-gray-500">{movie.release_date}</p>
                                         <div className="flex items-center space-x-2">
                                             <button className="text-red-500 hover:text-red-700 flex items-center"
-                                                onClick={() => handleFavoriteList(movie.id)}>
+                                                onClick={() => handleRemoveFavoriteList(movie.id)}>
                                                 Remove
                                             </button>
                                         </div>
@@ -223,7 +240,8 @@ export function ProfilePage() {
                                         <p className="text-gray-500">{rating.movie.release_date}</p>
                                         <p className="text-gray-500">My rating: {rating.rating}</p>
                                         <div className="flex items-center space-x-2">
-                                            <button className="text-red-500 hover:text-red-700 flex items-center">
+                                            <button className="text-red-500 hover:text-red-700 flex items-center"
+                                                onClick={() => handleRemoveRatingList(rating.movie.id)}>
                                                 Remove
                                             </button>
                                         </div>

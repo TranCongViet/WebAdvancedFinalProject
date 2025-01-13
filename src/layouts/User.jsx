@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import {
     HomePage, NotFound, SignUpPage,
-    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage
+    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage,
 } from '../pages'
 import { Header, Footer } from '../components/layout'
+import { PrivateRoute } from '../components';
 export function User() {
     return (
         <div>
@@ -17,7 +18,11 @@ export function User() {
                 <Route path="/active-account" element={<ActiveAccountPage />} />
                 <Route path="/person/:id" element={<CastDetailPage />} />
                 <Route path="/movie/:id" element={<DetailPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/profile" element={
+                    <PrivateRoute>
+                        <ProfilePage />
+                    </PrivateRoute>
+                } />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

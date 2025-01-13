@@ -10,13 +10,13 @@ export function DetailPage() {
     const [detail, setDetail] = useState(null);
     const [loading, setLoading] = useState(true);
     const { jwtToken, user } = useAuth();
-    const [commentAdded, setCommentAdded] = useState(false); // State theo dõi thay đổi
+    const [commentAdded, setCommentAdded] = useState(false);
     const [Recomendation, setRecomendation] = useState(null);
 
     useEffect(() => {
         const fetchMovieDetails = async (id) => {
             setLoading(true);
-            const data = await MovieService.fetchGetMoviesByTMDB_id(id);  // Detail
+            const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
                 console.log("checkvar", data.data)
                 setDetail(data.data);
@@ -29,7 +29,7 @@ export function DetailPage() {
     useEffect(() => {
         const fetchMovieDetails = async (id) => {
             setLoading(true);
-            const data = await MovieService.fetchGetMoviesByTMDB_id(id);  // Detail
+            const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
                 console.log("checkvar", data.data)
                 setDetail(data.data);

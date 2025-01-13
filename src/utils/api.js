@@ -104,9 +104,20 @@ export const MovieService = {
             throw error;
         }
     },
-
-
-
+    removeRatingList: async (movie_id, token) => {
+        try {
+            const data = await axios.delete(`${API_URL}/review/${movie_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data;
+        }
+        catch (error) {
+            console.error("Error removing rating list:", error);
+            throw error;
+        }
+    },
 
     fetchPersonByID: async (id) => {
         try {

@@ -45,10 +45,9 @@ export const MovieService = {
 
     addComment: async (movie_id, content, rating, token) => {
         try {
-            console.log("Check var", movie_id, content, rating, token);
             const data = await axios.post(`${API_URL}/review`, {
-                content: content,
                 movieId: movie_id,
+                content: content,
                 rating: rating
             }, {
                 headers: {
@@ -62,37 +61,117 @@ export const MovieService = {
             throw error;
         }
     },
+    removeComment: async (movie_id, token) => {
+        try {
+            console.log("test movie_id", movie_id, token)
+            const data = await axios.delete(`${API_URL}/review/${movie_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error removing comment:", error);
+            throw error;
+        }
+    },
+    removeWatchList: async (movie_id, token) => {
+        try {
+            const data = await axios.delete(`${API_URL}/movie-watch-list/${movie_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error removing watch list:", error);
+            throw error;
+        }
+    },
+    removeFavoriteList: async (movie_id, token) => {
+        try {
+            const data = await axios.delete(`${API_URL}/movie-favorite-list/${movie_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error removing favorite list:", error);
+            throw error;
+        }
+    },
+
+
+
+
     fetchPersonByID: async (id) => {
         try {
             const data = await axios.get(`${API_URL}/people/${id}`);
-            return data.data
+            return data
         }
         catch (error) {
             console.error("Error fetching person by ID:", error);
             throw error;
         }
     },
-
-    // searchByName: async (query, page) => {
-    //     const server = localStorage.getItem('server');
-    //     const res = await fetch(`${API_URL}/${server}/search?q=${query}&page=${page}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
-    //     const data = await res.json();
-    //     return data.data;
-    // },
-    // searchByGenre: async (genre, page) => {
-    //     const server = localStorage.getItem('server');
-    //     const res = await fetch(`${API_URL}/${server}/genre?genre=${genre}&page=${page}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
-    //     const data = await res.json();
-    //     return data.data;
-    // },
+    getAllMovieRatingList: async (token) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie-rating-list`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data.data
+        }
+        catch (error) {
+            console.error("Error fetching all movie rating list:", error);
+            throw error;
+        }
+    },
+    getAllMovieWatchList: async (token) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie-watch-list`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching all movie watch list:", error);
+            throw error;
+        }
+    },
+    getAllMovieFavoriteList: async (token) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie-favorite-list`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data.data
+        }
+        catch (error) {
+            console.error("Error fetching all movie favorite list:", error);
+            throw error;
+        }
+    },
+    recommendationByGenres: async (genres) => {
+        try {
+            const data = await axios.post(`${API_URL}/movie/filter`, {
+                type: "OR",
+                keywords: [genres.join(",")],
+                genres: [genres.join(",")],
+            });
+            return data.data
+        }
+        catch (error) {
+            console.error("Error fetching recommendation by genres:", error);
+            throw error;
+        }
+    }
 }

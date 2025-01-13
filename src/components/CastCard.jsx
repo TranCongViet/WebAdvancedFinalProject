@@ -12,7 +12,7 @@ export function CastCard({ CastList }) {
                         <img
                             src={cast.profile_path
                                 ? `https://image.tmdb.org/t/p/w500${cast.profile_path}`
-                                : "https://via.placeholder.com/500x750?text=No+Image"}
+                                : "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"}
                             alt={cast.name || "Movie Poster"}
                             className="w-full h-full object-contain transition-transform duration-300 ease-in-out transform hover:scale-125"
                         />

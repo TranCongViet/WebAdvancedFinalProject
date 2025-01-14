@@ -1,4 +1,4 @@
-import { API_URL } from './config';
+import { API_URL, LLM_URL } from './config';
 import axios from 'axios';
 
 export const MovieService = {
@@ -258,6 +258,66 @@ export const MovieService = {
         }
         catch (error) {
             console.error("Error checking favorite list:", error);
+            throw error;
+        }
+    },
+    filter: async (filterList) => {
+        try {
+            console.log("filterList", filterList)
+            console.log("filterGenre", filterList.genre)
+            if (filterList.genre === null) {
+                return null;
+            }
+            const temp = `"${filterList.genre}"`;
+            const data = await axios.post(`${API_URL}/movie/filter`, {
+                type: "OR",
+                genres: temp
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error filtering movies:", error);
+            throw error;
+        }
+    },
+    getGenres: async () => {
+        try {
+            const data = await axios.get(`${API_URL}/movie/genres`);
+            console.log("Genres", data);
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching genres:", error);
+            throw error;
+        }
+    },
+    llmSearchMovies: async (query) => {
+        try {
+            const data = await axios.get(`${LLM_URL}/retriever/`, {
+                params: {
+                    llm_api_key: 'AIzaSyBDzzeUPb8DvFzNboDn4qA2BrzGOMNIZmU',
+                    collection_name: 'movies',
+                    query: query
+                }
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error searching movies:", error);
+            throw error;
+        }
+    },
+    getMoviesByList: async (list) => {
+        console.log("check list", list)
+        try {
+            const data = await axios.post(`${API_URL}/movie/list`, {
+                ids: list,
+                size: 10
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching movies by list:", error);
             throw error;
         }
     }

@@ -10,7 +10,7 @@ export function SearchPage() {
     const [movies, setMovies] = useState([]);
     const [maxPage, setMaxPage] = useState(1);
     const [loading, setLoading] = useState(true);
-
+    const [genres, setGenres] = useState([]);
     // State cho bộ lọc
     const [filters, setFilters] = useState({
         genre: "",
@@ -19,7 +19,16 @@ export function SearchPage() {
         startDate: "",
         endDate: "",
     });
-
+    useEffect(() => {
+        const getFullGenres = async () => {
+            const data = await MovieService.getGenres();
+            console.log("Full Genres", data.data.data);
+            // Thêm thể loại "Tất cả" vào mảng genres
+            const allGenres = [{ id: 0, name: "All Genres" }, ...data.data.data];
+            setGenres(allGenres);
+        };
+        getFullGenres();
+    }, []);
     useEffect(() => {
         const getSearchResult = async () => {
             const page = searchParams.get("page") || "1";
@@ -32,12 +41,31 @@ export function SearchPage() {
                     setMovies(data.data.data.content);
                     setMaxPage(data.data.data.totalPages);
                 }
+                setFilters({
+                    genre: [],
+                    minVote: 0,
+                    maxVote: 10,
+                    startDate: "",
+                    endDate: "",
+                });
                 setLoading(false);
             }
         };
         getSearchResult();
-    }, [searchParams, filters]);
+    }, [searchParams]);
 
+    const handleFilter = async () => {
+        const filter = async () => {
+            console.log("Đang lọc",);
+            setLoading(true);
+            const data = await MovieService.filter(filters);
+            console.log("Data đã lọc", data);
+
+            //setMovies
+            setLoading(false);
+        };
+        filter();
+    };
     // Xử lý thay đổi bộ lọc
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -54,21 +82,17 @@ export function SearchPage() {
                 <h3 className="text-lg font-semibold mb-4">Bộ lọc</h3>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Thể loại</label>
-                    <select
-                        name="genre"
-                        value={filters.genre}
-                        onChange={handleFilterChange}
-                        className="block w-full p-2 border rounded"
-                    >
-                        <option value="">Tất cả</option>
-                        <option value="action">Hành động</option>
-                        <option value="comedy">Hài</option>
-                        <option value="drama">Chính kịch</option>
-                        {/* Thêm các thể loại khác */}
+                    <select className="block w-full p-2 border rounded" name="genre" onChange={handleFilterChange} >
+                        {genres.map((genre) => (
+                            <option key={genre.id} value={genre.name}
+                            >
+                                {genre.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Vote tối thiểu</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Rating tối thiểu</label>
                     <input
                         type="number"
                         name="minVote"
@@ -80,7 +104,7 @@ export function SearchPage() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Vote tối đa</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Rating tối đa</label>
                     <input
                         type="number"
                         name="maxVote"
@@ -111,7 +135,15 @@ export function SearchPage() {
                         className="block w-full p-2 border rounded"
                     />
                 </div>
+                <button
+                    onClick={handleFilter}
+                    className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+                >
+                    Áp dụng bộ lọc
+                </button>
             </div>
+
+
 
             {/* Kết quả tìm kiếm */}
             <div className="w-full lg:w-3/4 lg:pl-5">

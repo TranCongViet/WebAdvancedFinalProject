@@ -24,7 +24,7 @@ export function SearchBar() {
         if (selectedOption === "Search") {
             navigate(`/search?query=${query}&page=1`);
         } else if (selectedOption === "LLM Movie Search") {
-            navigate(`/moviesearch?query=${query}`);
+            navigate(`/llmMovieSearch?query=${query}`);
         } else if (selectedOption === "AI Navigation") {
             navigate(`/ainavigation?query=${query}`);
         }
@@ -44,7 +44,7 @@ export function SearchBar() {
                 <select
                     value={selectedOption} // Liên kết với trạng thái
                     onChange={handleChange} // Xử lý khi có sự thay đổi
-                    className="w-full md:w-[120px] h-10 text-black bg-gray-50 rounded-lg focus:outline-none"
+                    className="w-full md:w-[155px] h-10 text-black bg-gray-50 rounded-lg focus:outline-none"
                 >
                     {TypeSearch.map((s, i) => (
                         <option key={i} value={s}>

@@ -135,6 +135,7 @@ export function DetailPage() {
             setCheckIsWatchList(false);
         } catch (error) {
             console.error("Lỗi khi gọi API: ", error);
+            setCheckIsWatchList(false);
         };
     }
     const handleUnlike = async () => {
@@ -152,6 +153,7 @@ export function DetailPage() {
             setCheckIsWatchList(true);
         } catch (error) {
             console.error("Lỗi khi gọi API: ", error);
+            setCheckIsWatchList(true);
         };
     }
     const handleLike = async () => {

@@ -159,7 +159,6 @@ export function DetailPage() {
     }
     const handleLike = async () => {
         try {
-            console.log);
             const response = await MovieService.addFavoriteList(detail.id, jwtToken);
             setCheckIsLiked(true);
             toast.success("Thêm vào favorite list! 🎉");

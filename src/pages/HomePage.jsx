@@ -19,7 +19,6 @@ export function HomePage() {
             setLoading1(true);
             const data = await MovieService.fetchPopularMovies(active);
             if (data) {
-                console.log("popular", data.data.content);
                 setPopularMovies(data.data.content);
             }
             setLoading1(false);
@@ -28,7 +27,6 @@ export function HomePage() {
             setLoading2(true);
             const data = await MovieService.fetchLatestTrailers();
             if (data) {
-                console.log("trailer", data.content);
                 setLatestTrailers(data.content);
             }
             setLoading2(false);
@@ -42,7 +40,6 @@ export function HomePage() {
             setLoading(true);
             const data = await MovieService.fetchTrendingMovies(active);
             if (data) {
-                console.log("trending", data.data.content);
                 setMovies(data.data.content);
             }
             setLoading(false);

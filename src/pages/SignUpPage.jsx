@@ -18,7 +18,6 @@ export function SignUpPage() {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            console.log(data);
             const response = await axios.post(`https://movies-recommendation-api-xhpa.onrender.com/user/register`, {
                 username: data.username,
                 password: data.password,
@@ -31,7 +30,6 @@ export function SignUpPage() {
             }, 2000);
         } catch (error) {
             if (!error.response) {
-                console.log(error);
                 setMessage('Server không phản hồi, vui lòng thử lại sau!');
             } else {
                 setMessage(error.response.data.message);

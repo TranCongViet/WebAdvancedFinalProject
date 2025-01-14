@@ -13,7 +13,7 @@ export function Header() {
                 {user ? (
                     <div>
                         <Link to="/profile" className="text-blue-600 font-semibold px-4 py-2  hover:text-white transition duration-300">
-                            @{user}
+                            {user}
                         </Link>
                         <button onClick={logout}
                             className="px-4 py-2 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700"

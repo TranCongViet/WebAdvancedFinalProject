@@ -12,14 +12,12 @@ export function CastDetailPage() {
 
     useEffect(() => {
         const fetchPersonByID = async (id) => {
-            console.log("id", id);
             setLoading(true);
 
             try {
                 const data = await MovieService.fetchPersonByID(id);
 
                 if (data && data.data) {
-                    console.log("person", data.data.data);
                     setPerson(data.data.data);
                 } else {
                     console.error("Không tìm thấy dữ liệu người dùng");

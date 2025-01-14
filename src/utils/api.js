@@ -205,12 +205,10 @@ export const MovieService = {
     },
     recommendationByGenres: async (genres) => {
         try {
-            console.log("check genres", genres);
             const data = await axios.post(`${API_URL}/movie/filter`, {
                 type: "OR",
                 genres: genres
             });
-            console.log(data);
             return data
         }
         catch (error) {
@@ -263,13 +261,9 @@ export const MovieService = {
     },
     filter: async (filterList, title) => {
         try {
-            console.log("filterList", filterList)
-            console.log("filterGenre", filterList.genre)
             //"startDate": "2020-01-01",
             //"endDate": "2024-01-01",
             if (filterList.genre.length == 0) { // filterList.genre === "All Genres"
-                console.log("Vô cái này rồi")
-                console.log(title, filterList.minVote, filterList.maxVote);
                 const data = await axios.post(`${API_URL}/movie/filter`, {
                     type: "OR",
                     title: title,
@@ -278,7 +272,6 @@ export const MovieService = {
                     startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
                     endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
                 });
-                console.log(data);
                 return data
             } else {
                 const genre =
@@ -292,7 +285,6 @@ export const MovieService = {
                     startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
                     endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
                 });
-                console.log(data);
                 return data
             }
         }
@@ -369,6 +361,20 @@ export const MovieService = {
         }
         catch (error) {
             console.error("Error fetching movies by list:", error);
+            throw error;
+        }
+    },
+    getProfile: async (token) => {
+        try {
+            const data = await axios.get(`${API_URL}/user/profile`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching profile:", error);
             throw error;
         }
     }

@@ -11,13 +11,10 @@ export function LlmMovieSearch() {
     useEffect(() => {
         const getSearchResult = async () => {
             const query = searchParams.get("query");
-            console.log("check query", query);
             if (query) {
                 setLoading(true);
                 const data = await MovieService.llmSearchMovies(query);
-                console.log("Test llm", data)
                 const getMovieByList = await MovieService.getMoviesByList(data.data.data.result);
-                console.log("Test getMovieByList", getMovieByList)
                 setMovies(getMovieByList.data.data.content);
                 setLoading(false);
             }

@@ -20,7 +20,6 @@ export function ActiveAccountPage() {
             const response = await axios.post(`https://movies-recommendation-api-xhpa.onrender.com/user/send-otp`, {
                 email: email,
             });
-            console.log(response.data);
             setIsOTPFormVisible(true);
         } catch (error) {
             setMessage(error.response.data.message);

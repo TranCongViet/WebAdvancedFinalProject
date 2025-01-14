@@ -20,7 +20,6 @@ export function SearchBar() {
             alert("Please enter a search term.");
             return;
         }
-        console.log("Testing", selectedOption); // Kiểm tra loại tìm kiếm hiện tại
         if (selectedOption === "Search") {
             navigate(`/search?query=${query}&page=1`);
         } else if (selectedOption === "LLM Movie Search") {

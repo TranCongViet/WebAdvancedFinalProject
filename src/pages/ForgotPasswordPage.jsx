@@ -20,7 +20,6 @@ export function ForgotPasswordPage() {
             const response = await axios.post(`https://movies-recommendation-api-xhpa.onrender.com/user/send-otp`, {
                 email: email,
             });
-            console.log(response.data);
             setIsOTPFormVisible(true);
         } catch (error) {
             setMessage(error.response.data.message);
@@ -39,7 +38,6 @@ export function ForgotPasswordPage() {
                 otp: otp,
                 password: newPassword,
             });
-            console.log("check var", response)
             setMessage("Khôi phục mật khẩu thành công, chuyển hướng về trang đăng nhập sau 2s...");
             setIsError(false);
             setTimeout(() => {

@@ -22,7 +22,6 @@ export function SearchPage() {
     useEffect(() => {
         const getFullGenres = async () => {
             const data = await MovieService.getGenres();
-            console.log("Full Genres", data.data.data);
             // Thêm thể loại "Tất cả" vào mảng genres
             const allGenres = [{ id: 0, name: "All Genres" }, ...data.data.data];
             setGenres(allGenres);
@@ -36,7 +35,6 @@ export function SearchPage() {
             setLoading(true);
             if (query) {
                 const data = await MovieService.searchMovies(query, page, filters);
-                console.log("Testing search", data);
                 if (data && data.data.data.content) {
                     setMovies(data.data.data.content);
                     setMaxPage(data.data.data.totalPages);
@@ -56,10 +54,8 @@ export function SearchPage() {
 
     const handleFilter = async () => {
         const filter = async () => {
-            console.log("Đang lọc",);
             setLoading(true);
             const data = await MovieService.filter(filters, searchParams.get("query"));
-            console.log("Data đã lọc", data);
             setMovies(data.data.data.content)
             setLoading(false);
         };

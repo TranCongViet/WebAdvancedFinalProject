@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export function Pagination({ pageLimit }) {
-    console.log()
     const [searchParams, setSearchParams] = useSearchParams();
     const [pageOffset, setPageOffset] = useState(() => {
         return +searchParams.get('page') || 1;

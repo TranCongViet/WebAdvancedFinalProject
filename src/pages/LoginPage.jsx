@@ -46,7 +46,6 @@ export function LoginPage() {
 
     const handleGoogleLoginSuccess = async (response) => {
         const authorizationCode = response.credential;
-        console.log(authorizationCode)
         setLoading(true);
         try {
             // Gửi mã authorizationCode đến backend để lấy access_token

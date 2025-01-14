@@ -51,7 +51,7 @@ export function DetailPage() {
             const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
                 setDetail(data.data);
-                return data.data; // Trả về dữ liệu chi tiết phim
+                return data.data;
             }
             return null;
         };
@@ -59,7 +59,6 @@ export function DetailPage() {
         const recommendationByGenres = async (genres) => {
             const data = await MovieService.recommendationByGenres(genres);
             if (data) {
-                console.log("checkvar2", data.data.data.content);
                 setRecomendation(data.data.data.content);
             }
         };
@@ -117,7 +116,6 @@ export function DetailPage() {
         </div>
     );
     const handleClick = (action) => {
-        console.log(`${action} button clicked`);
         if (action == "handleRemoveWatchList") handleRemoveWatchList();
         if (action == "handleLike") handleLike();
         if (action == "handleUnlike") handleUnlike();
@@ -127,7 +125,6 @@ export function DetailPage() {
     const handleRemove = async () => {
         try {
             const response = await MovieService.removeComment(detail.id, jwtToken);
-            console.log("remove", response);
             setCommentAdded(!commentAdded);
         } catch (error) {
             console.error("Lỗi khi gọi API: ", error);
@@ -162,7 +159,7 @@ export function DetailPage() {
     }
     const handleLike = async () => {
         try {
-            console.log("handle like");
+            console.log);
             const response = await MovieService.addFavoriteList(detail.id, jwtToken);
             setCheckIsLiked(true);
             toast.success("Thêm vào favorite list! 🎉");

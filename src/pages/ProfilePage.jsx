@@ -6,20 +6,37 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 export function ProfilePage() {
     const [selected, setSelected] = useState(1);
     const { jwtToken } = useAuth();
-
+    const [profile, setProfile] = useState(null);
     const [RatingList, setRatingList] = useState([]);
     const [FavoriteList, setFavoriteList] = useState([]);
     const [WatchList, setWatchList] = useState([]);
 
+    const [Loading, setLoading] = useState(true);
     const [LoadingRating, setLoadingRating] = useState(true);
     const [LoadingFavorite, setLoadingFavorite] = useState(true);
     const [LoadingWatch, setLoadingWatch] = useState(true);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            setLoading(true);
+            try {
+                const data = await MovieService.getProfile(jwtToken);
+                setProfile(data.data.data);
+            }
+            catch (error) {
+                console.error("Lỗi khi gọi API: ", error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+        fetchProfile();
+    }, []);
 
     const getAllMovieRatingList = async () => {
         try {
             setLoadingRating(true);
             const data = await MovieService.getAllMovieRatingList(jwtToken);  // Detail
-            console.log(data);
             if (data) {
                 setRatingList(data.data.content);
             }
@@ -87,7 +104,6 @@ export function ProfilePage() {
     const handleRemoveRatingList = async (movieId) => {
         try {
             const response = await MovieService.removeRatingList(movieId, jwtToken);
-            console.log("Test", response);
             if (response.data.status === "success") {
                 getAllMovieRatingList();
             } else {
@@ -251,7 +267,7 @@ export function ProfilePage() {
     };
 
     return (
-        <div>
+        <div className="min-h-screen">
             <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg flex items-center space-x-6">
                 <div className="w-32 h-32 rounded-full overflow-hidden">
                     <img
@@ -260,11 +276,16 @@ export function ProfilePage() {
                         className="w-full h-full object-cover"
                     />
                 </div>
-
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-800">{user.name}</h1>
-                    <p className="text-gray-500 mt-2">Date of Birth: {new Date(user.dob).toLocaleDateString()}</p>
-                </div>
+                {profile == null ? (
+                    <p>Loading...</p>
+                ) : (
+                    <div>
+                        <h1 className="text-2xl font-semibold">{profile.username}</h1>
+                        <p className="text-gray-500">{profile.email}</p>
+                        <p className="text-gray-500">Ngày tham gia: {new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(new Date(profile.createdAt))}</p>
+                    </div>
+                )
+                }
             </div>
 
             <div className="flex space-x-4 items-center justify-center mt-4">

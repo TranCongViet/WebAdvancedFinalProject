@@ -25,9 +25,7 @@ export function AiNavigate() {
 
     const fetchData = async () => {
         try {
-            console.log("Test mongoid", navigate.params.movie_ids[0]);
             const result = await MovieService.getMoviesByMongoID(navigate.params.movie_ids[0]); // Đợi kết quả trả về từ `data()`
-            console.log("Test", result);
             //Navigate(`/movie/${id}`)
         } catch (error) {
             console.error("Lỗi khi lấy dữ liệu:", error);
@@ -51,7 +49,6 @@ export function AiNavigate() {
             Navigate(`/search?query=${navigate.params.keyword}&page=1`)
         }
         else if (navigate.route == "MOVIE_PAGE") {
-            console.log("Đã vô");
             if (navigate.params == null) {
                 return <div className="flex justify-center pt-5 h-screen bg-gray-100 bg-opacity-100">
                     Truy vấn của bạn không tìm thấy kết quả

@@ -123,7 +123,7 @@ export function ForgotPasswordPage() {
                                 Mật khẩu mới
                             </label>
                             <input
-                                type="text"
+                                type="password"
                                 id="newPassword"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 placeholder="Nhập mật khẩu mới"

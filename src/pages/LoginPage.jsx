@@ -37,6 +37,9 @@ export function LoginPage() {
                         navigate('/active-account');
                     }, 2000);
                 }
+                else {
+                    setMessage(error.response.data.message);
+                }
             }
             setIsError(true);
         } finally {

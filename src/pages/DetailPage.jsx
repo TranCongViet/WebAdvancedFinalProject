@@ -134,26 +134,32 @@ export function DetailPage() {
         try {
             const response = await MovieService.removeWatchList(detail.id, jwtToken);
             setCheckIsWatchList(false);
+            toast.error("Xoá khỏi watch list thành công!");
         } catch (error) {
             console.error("Lỗi khi gọi API: ", error);
             setCheckIsWatchList(false);
+            toast.error("Xoá khỏi watch list thành công!");
         };
     }
     const handleUnlike = async () => {
         try {
             const response = await MovieService.removeFavoriteList(detail.id, jwtToken);
             setCheckIsLiked(false);
+            toast.error("Xoá khỏi favorite list thành công!");
         } catch (error) {
             console.error("Lỗi khi gọi API: ", error);
             setCheckIsLiked(false);
+            toast.error("Xoá khỏi favorite list thành công!");
         };
     }
     const handleAddWatchList = async () => {
         try {
             const response = await MovieService.addMovieWatchList(detail.id, jwtToken);
             setCheckIsWatchList(true);
+            toast.success("Thêm vào watch list! 🎉");
         } catch (error) {
             console.error("Lỗi khi gọi API: ", error);
+            toast.success("Thêm vào watch list! 🎉");
             setCheckIsWatchList(true);
         };
     }

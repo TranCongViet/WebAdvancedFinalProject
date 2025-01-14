@@ -81,7 +81,7 @@ export function HomePage() {
                 {loading2
                     ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
                     : (
-                        <TrailerCard TrailerMovie={latestTrailers} onMovieClick={setSelectedMovie} />
+                        <TrailerCard TrailerMovie={latestTrailers.slice(0, 8)} onMovieClick={setSelectedMovie} />
                     )
                 }
             </div>

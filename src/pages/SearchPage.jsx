@@ -58,10 +58,9 @@ export function SearchPage() {
         const filter = async () => {
             console.log("Đang lọc",);
             setLoading(true);
-            const data = await MovieService.filter(filters);
+            const data = await MovieService.filter(filters, searchParams.get("query"));
             console.log("Data đã lọc", data);
-
-            //setMovies
+            setMovies(data.data.data.content)
             setLoading(false);
         };
         filter();

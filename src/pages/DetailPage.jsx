@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { MovieService } from '../utils/api';
 import { CastCard, Review, TrailerDetail, MoviesCard } from '../components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -18,6 +18,11 @@ export function DetailPage() {
     const [Recomendation, setRecomendation] = useState(null);
     const [checkIsWatchList, setCheckIsWatchList] = useState(false);
     const [checkIsLiked, setCheckIsLiked] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -45,7 +50,6 @@ export function DetailPage() {
         const fetchMovieDetails = async (id) => {
             const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
-                console.log("checkvar", data.data);
                 setDetail(data.data);
                 return data.data; // Trả về dữ liệu chi tiết phim
             }
@@ -169,6 +173,9 @@ export function DetailPage() {
     if (loading) {
         return <SkeletonLoader />;
     }
+    if (loading == false && detail == null) {
+        return <div className="h-screen justify-center">Không tìm thấy dữ liệu lưu trữ</div>;
+    }
     return (
         detail && (
             <div className="">
@@ -238,13 +245,16 @@ export function DetailPage() {
                     </div>
                 </div>
 
-                <div className="container mx-auto px-4 flex items-center py-4">
+                <div className="container mx-auto px-4 flex items-center justify-between py-4">
                     <h1 className="text-2xl text-left font-bold text-black">
                         Danh sách diễn viên
                     </h1>
+                    <Link to={`/castList/${detail.id}`} className="text-base text-left font-bold text-black hover:underline cursor-pointer">
+                        Xem tất cả
+                    </Link>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
-                    <CastCard CastList={detail.credits.cast} />
+                    <CastCard CastList={detail.credits.cast.slice(0, 10)} />
                 </div>
                 <div className="container mx-auto px-4 flex items-center py-4">
                     <h1 className="text-2xl text-left font-bold text-black">

@@ -64,7 +64,6 @@ export const MovieService = {
     },
     removeComment: async (movie_id, token) => {
         try {
-            console.log("test movie_id", movie_id, token)
             const data = await axios.delete(`${API_URL}/review/${movie_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -207,11 +206,11 @@ export const MovieService = {
     recommendationByGenres: async (genres) => {
         try {
             console.log("check genres", genres);
-            const temp = genres.map((genre) => genre.name);
             const data = await axios.post(`${API_URL}/movie/filter`, {
                 type: "OR",
-                genres: ["Horror", "Thriller", "Science", "Fiction"]
+                genres: genres
             });
+            console.log(data);
             return data
         }
         catch (error) {
@@ -262,19 +261,40 @@ export const MovieService = {
             throw error;
         }
     },
-    filter: async (filterList) => {
+    filter: async (filterList, title) => {
         try {
             console.log("filterList", filterList)
             console.log("filterGenre", filterList.genre)
-            if (filterList.genre === null) {
-                return null;
+            //"startDate": "2020-01-01",
+            //"endDate": "2024-01-01",
+            if (filterList.genre.length == 0) { // filterList.genre === "All Genres"
+                console.log("Vô cái này rồi")
+                console.log(title, filterList.minVote, filterList.maxVote);
+                const data = await axios.post(`${API_URL}/movie/filter`, {
+                    type: "OR",
+                    title: title,
+                    minVote: filterList.minVote > 0 ? parseInt(filterList.minVote) : 0,
+                    maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
+                    startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
+                    endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
+                });
+                console.log(data);
+                return data
+            } else {
+                const genre =
+                    [filterList.genre];
+                const data = await axios.post(`${API_URL}/movie/filter`, {
+                    type: "OR",
+                    genres: genre,
+                    title: title,
+                    minVote: filterList.minVote > 0 ? parseInt(filterList.minVote) : 0,
+                    maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
+                    startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
+                    endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
+                });
+                console.log(data);
+                return data
             }
-            const temp = `"${filterList.genre}"`;
-            const data = await axios.post(`${API_URL}/movie/filter`, {
-                type: "OR",
-                genres: temp
-            });
-            return data
         }
         catch (error) {
             console.error("Error filtering movies:", error);
@@ -284,7 +304,6 @@ export const MovieService = {
     getGenres: async () => {
         try {
             const data = await axios.get(`${API_URL}/movie/genres`);
-            console.log("Genres", data);
             return data
         }
         catch (error) {
@@ -316,7 +335,6 @@ export const MovieService = {
                     query: query
                 }
             });
-            console.log(data);
             return data
         }
         catch (error) {
@@ -325,13 +343,29 @@ export const MovieService = {
         }
     },
     getMoviesByList: async (list) => {
-        console.log("check list", list)
         try {
             const data = await axios.post(`${API_URL}/movie/list`, {
                 ids: list,
                 size: 10
             });
             return data
+        }
+        catch (error) {
+            console.error("Error fetching movies by list:", error);
+            throw error;
+        }
+    },
+    getMoviesByMongoID: async (list) => {
+        try {
+            // console.log(list);
+            // const data = await axios.post(`${API_URL}/movie/list`, {
+            //     ids: list,
+            //     size: 10
+            // });
+            // console.log("Test api", data);
+            // return data
+            console.log("Test id", list);
+            return null;
         }
         catch (error) {
             console.error("Error fetching movies by list:", error);

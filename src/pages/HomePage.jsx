@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SearchBar, ToggleTrending, SkeletonCard, MoviesCard, TrailerCard, TrailerDetail } from "../components";
+import { SearchBar, ToggleTrending, SkeletonCard, MoviesCard, TrailerCard, TrailerDetail, ScrollToTopButton } from "../components";
 import { MovieService } from "../utils/api"
 
 export function HomePage() {
@@ -48,6 +48,7 @@ export function HomePage() {
     }, [active]);
     return (
         <div className="bg-gray-100">
+            <ScrollToTopButton />
             <SearchBar />
             <ToggleTrending active={active} setActive={setActive} />
 
@@ -57,7 +58,7 @@ export function HomePage() {
                     : <MoviesCard movies={movies} />}
             </div>
 
-            <div className="container mx-auto px-4 flex items-center py-4">
+            <div className="container px-4 flex items-center py-4">
                 <h1 className="text-2xl text-left font-bold text-black">
                     Popular Movies
                 </h1>
@@ -68,7 +69,7 @@ export function HomePage() {
                     : <MoviesCard movies={popularMovies} />}
             </div>
 
-            <div className="container mx-auto px-4 flex items-center py-4">
+            <div className="container px-4 flex items-center py-4">
                 <h1 className="text-2xl text-left font-bold text-black">
                     Latest trailers
                 </h1>

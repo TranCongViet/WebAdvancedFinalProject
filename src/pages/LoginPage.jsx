@@ -125,7 +125,18 @@ export function LoginPage() {
                                             id="password"
                                             placeholder="••••••••"
                                             className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                            {...register('password', { required: 'Mật khẩu là bắt buộc' })}
+                                            {...register('password', {
+                                                required: 'Mật khẩu là bắt buộc',
+                                                minLength: {
+                                                    value: 4,
+                                                    message: 'Mật khẩu phải có độ dài tự 4 đến 255 ký tự',
+                                                },
+                                                maxLength: {
+                                                    value: 255,
+                                                    message: 'Mật khẩu phải có độ dài tự 4 đến 255 ký tự',
+                                                }
+                                            }
+                                            )}
                                         />
                                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
                                     </div>

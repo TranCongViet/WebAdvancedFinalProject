@@ -9,3 +9,12 @@ export function PrivateRoute({ children }) {
     }
     return children;
 }
+
+export function CheckLogin({ children }) {
+    const { setUser } = useAuth();
+    setUser(localStorage.getItem('user'));
+    if (localStorage.getItem('user')) {
+        return <Navigate to="/" replace />;
+    }
+    return children;
+}

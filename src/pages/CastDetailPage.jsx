@@ -85,32 +85,39 @@ export function CastDetailPage() {
                                                     </h2>
                                                     <p className="mt-2">{person.biography}</p>
                                                     <h1 className="text-2xl font-bold mt-2">Danh sách diễn suất</h1>
-                                                    <div className="container mx-auto p-4">
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                            {person?.movie_credits?.cast
-                                                                .sort((a, b) => {
-                                                                    return new Date(b.release_date) - new Date(a.release_date);
-                                                                })
-                                                                .map((actor) => (
-                                                                    <div key={actor.id}>
-                                                                        <div className="bg-white rounded-md shadow-md p-4">
-                                                                            <h2 className="text-xl font-bold mb-2">{actor.release_date}</h2>
-                                                                            <ul>
-                                                                                <li className="mb-2">
-                                                                                    <span className="font-bold">{actor.title}</span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    {/* <span className="font-bold">Character</span> */}
-                                                                                    <span className="text-gray-500">as {actor.character}</span>
-                                                                                </li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
+                                                    {
+                                                        person.movie_credits?.cast == null ? (
+                                                            <div className="text-center text-xl font-bold text-gray-800 p-8 h-screen">
+                                                                Không tìm thấy dữ liệu diễn viên này trong Database 😢
+                                                            </div>
+                                                        ) : (
+                                                            <div className="container mx-auto p-4">
+                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                                    {person?.movie_credits?.cast
+                                                                        .sort((a, b) => {
+                                                                            return new Date(b.release_date) - new Date(a.release_date);
+                                                                        })
+                                                                        .map((actor) => (
+                                                                            <div key={actor.id}>
+                                                                                <div className="bg-white rounded-md shadow-md p-4">
+                                                                                    <h2 className="text-xl font-bold mb-2">{actor.release_date}</h2>
+                                                                                    <ul>
+                                                                                        <li className="mb-2">
+                                                                                            <span className="font-bold">{actor.title}</span>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            {/* <span className="font-bold">Character</span> */}
+                                                                                            <span className="text-gray-500">as {actor.character}</span>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
 
-                                                        </div>
-
-                                                    </div>
 
                                                 </div>
                                             </div>
@@ -120,7 +127,7 @@ export function CastDetailPage() {
                             </div>
                         ) : (
                             <div className="text-center text-2xl font-bold text-gray-800 p-8 h-screen">
-                                Database chưa lưu trữ dữ liệu người dùng này!
+                                Không tìm thấy dữ liệu diễn viên này trong Database 😢
                             </div>
                         )
                     }

@@ -28,7 +28,7 @@ export function LlmMovieSearch() {
                 Tìm kiếm: <span className="font-semibold text-black">{searchParams.get("query")}</span>
             </div>
             {
-                loading ? (<div>Loading....</div>
+                loading ? (<div className="h-screen">Loading....</div>
                 ) :
                     <div className="space-y-4">
                         {movies.length === 0 ? (

@@ -6,7 +6,7 @@ import { FadeLoader } from 'react-spinners';
 import { useAuth } from '../context/authcontext.jsx';
 
 export function SignUpPage() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const [message, setMessage] = useState('');
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export function SignUpPage() {
                 password: data.password,
                 email: data.email,
             });
-            setMessage(response.data.message);
+            setMessage("Đăng ký thành công, chuyển hướng về trang đăng nhập sau 2s...");
             setIsError(false);
             setTimeout(() => {
                 navigate('/login');
@@ -78,9 +78,9 @@ export function SignUpPage() {
                                         {...register('username', {
                                             required: 'Tên đăng nhập là bắt buộc',
                                             minLength: {
-                                                value: 3,
-                                                message: 'Tên đăng nhập cần ít nhất 3 ký tự',
-                                            }
+                                                value: 4,
+                                                message: 'Tên đăng nhập cần ít nhất 4 ký tự',
+                                            },
                                         })}
                                     />
                                     {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
@@ -121,7 +121,11 @@ export function SignUpPage() {
                                             minLength: {
                                                 value: 4,
                                                 message: 'Mật khẩu phải có độ dài từ 4 đến 255 ký tự',
-                                            }
+                                            },
+                                            maxLength: {
+                                                value: 255,
+                                                message: 'Mật khẩu phải có độ dài từ 4 đến 255 ký tự',
+                                            },
                                         })}
                                     />
                                     {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
@@ -136,7 +140,18 @@ export function SignUpPage() {
                                         id="confirm-password"
                                         placeholder="••••••••"
                                         className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                        {...register('confirmPassword', { required: 'Please confirm your password' })}
+                                        {...register('confirmPassword', {
+                                            required: 'Vui lòng xác nhận mật khẩu',
+                                            minLength: {
+                                                value: 4,
+                                                message: 'Mật khẩu phải có độ dài từ 4 đến 255 ký tự',
+                                            },
+                                            maxLength: {
+                                                value: 255,
+                                                message: 'Mật khẩu phải có độ dài từ 4 đến 255 ký tự',
+                                            },
+                                            validate: (value) => value === watch('password') || 'Mật khẩu không khớp',
+                                        })}
                                     />
                                     {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
                                 </div>

@@ -4,7 +4,7 @@ import {
     LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage, SearchPage, LlmMovieSearch, AiNavigate, CastListPage
 } from '../pages'
 import { Header, Footer } from '../components/layout'
-import { PrivateRoute } from '../components';
+import { PrivateRoute, CheckLogin } from '../components';
 export function User() {
     return (
         <div>
@@ -12,8 +12,16 @@ export function User() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/signUp" element={<SignUpPage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signUp" element={
+                    <CheckLogin>
+                        <SignUpPage />
+                    </CheckLogin>
+                } />
+                <Route path="/login" element={
+                    <CheckLogin>
+                        <LoginPage />
+                    </CheckLogin>
+                } />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/active-account" element={<ActiveAccountPage />} />
                 <Route path="/search" element={<SearchPage />} />

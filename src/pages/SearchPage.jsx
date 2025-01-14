@@ -37,7 +37,7 @@ export function SearchPage() {
                 const data = await MovieService.searchMovies(query, page, filters);
                 if (data && data.data.data.content) {
                     setMovies(data.data.data.content);
-                    setMaxPage(data.data.data.totalPages);
+                    setMaxPage(data.data.data.totalPages - 1);
                 }
                 setFilters({
                     genre: [],
@@ -57,6 +57,8 @@ export function SearchPage() {
             setLoading(true);
             const data = await MovieService.filter(filters, searchParams.get("query"));
             setMovies(data.data.data.content)
+            setMaxPage(data.data.data.totalPages);
+            console.log("CHECK PAGE", data);
             setLoading(false);
         };
         filter();
@@ -138,9 +140,6 @@ export function SearchPage() {
                 </button>
             </div>
 
-
-
-            {/* Kết quả tìm kiếm */}
             <div className="w-full lg:w-3/4 lg:pl-5">
                 <SearchBar />
                 <div className="mb-3 text-blue-600 font-semibold">
@@ -154,7 +153,7 @@ export function SearchPage() {
                     <div className="space-y-4">
                         {movies.length === 0 || +searchParams.get("page") > maxPage ? (
                             <div className="text-center h-screen">
-                                Không tìm thấy kết quả nào.
+                                Không tìm thấy kết quả nào 😢.
                             </div>
                         ) : (
                             <>

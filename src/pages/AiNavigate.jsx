@@ -23,14 +23,15 @@ export function AiNavigate() {
         getSearchResult();
     }, [searchParams]);
 
-    const fetchData = async () => {
+    const fetchDataMoviePage = async () => {
         try {
-            const result = await MovieService.getMoviesByMongoID(navigate.params.movie_ids[0]); // Đợi kết quả trả về từ `data()`
+            const result = await MovieService.getMoviesByMongoID(navigate.params.movie_ids[0]);
             //Navigate(`/movie/${id}`)
         } catch (error) {
             console.error("Lỗi khi lấy dữ liệu:", error);
         }
     };
+
 
     if (navigate != null) {
         if (navigate.status == "500") {
@@ -51,10 +52,10 @@ export function AiNavigate() {
         else if (navigate.route == "MOVIE_PAGE") {
             if (navigate.params == null) {
                 return <div className="flex justify-center pt-5 h-screen bg-gray-100 bg-opacity-100">
-                    Truy vấn của bạn không tìm thấy kết quả
+                    Truy vấn của bạn không tìm thấy kết quả 😢
                 </div>
             }
-            fetchData();
+            fetchDataMoviePage();
         }
         else if (navigate.route == "CAST_PAGE") {
             if (navigate.params == null) {

@@ -1,3 +1,4 @@
+import { get } from 'react-hook-form';
 import { AiNavigate } from '../pages';
 import { API_URL, LLM_URL } from './config';
 import axios from 'axios';
@@ -216,6 +217,23 @@ export const MovieService = {
             throw error;
         }
     },
+    // Lấy movie có tương đương với title
+    recommendationBySimilar: async (title) => {
+        try {
+            const data = await axios.get(`${LLM_URL}/retriever/`, {
+                params: {
+                    llm_api_key: 'AIzaSyBDzzeUPb8DvFzNboDn4qA2BrzGOMNIZmU',
+                    collection_name: 'movies',
+                    query: title
+                }
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error recommend similar movies:", error);
+            throw error;
+        }
+    },
     searchMovies: async (query, page) => {
         try {
             const data = await axios.get(`${API_URL}/movie/search`, {
@@ -347,23 +365,38 @@ export const MovieService = {
             throw error;
         }
     },
-    getMoviesByMongoID: async (list) => {
+    // Lấy thông tin phim theo MongoID
+    getMoviesByMongoID: async (id) => {
         try {
-            // console.log(list);
-            // const data = await axios.post(`${API_URL}/movie/list`, {
-            //     ids: list,
-            //     size: 10
-            // });
-            // console.log("Test api", data);
-            // return data
-            console.log("Test id", list);
-            return null;
+            const temp = [id];
+            const data = await axios.post(`${API_URL}/movie/list`, {
+                ids: temp,
+                size: 1
+            });
+            return data
         }
         catch (error) {
-            console.error("Error fetching movies by list:", error);
+            console.error("Error fetching movies by mongoID:", error);
             throw error;
         }
     },
+    // Lấy thông tin diễn viên theo MongoID
+    getCastByMongoID: async (mongoID) => {
+        try {
+            const temp = [mongoID]
+            const data = await axios.post(`${API_URL}/people/list`, {
+                ids: temp,
+                size: 1
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching cast by mongoID:", error);
+            throw error;
+        }
+    },
+
+    // Lấy hồ sơ người dùng
     getProfile: async (token) => {
         try {
             const data = await axios.get(`${API_URL}/user/profile`, {

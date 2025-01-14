@@ -13,15 +13,12 @@ export function DetailPage() {
     const { id } = useParams();
     const [detail, setDetail] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { jwtToken, user } = useAuth();
+    const { jwtToken } = useAuth();
     const [commentAdded, setCommentAdded] = useState(false);
     const [Recomendation, setRecomendation] = useState(null);
+    const [Recomendation2, setRecomendation2] = useState(null);
     const [checkIsWatchList, setCheckIsWatchList] = useState(false);
     const [checkIsLiked, setCheckIsLiked] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(false);
-    const toggleExpand = () => {
-        setIsExpanded(!isExpanded);
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +32,8 @@ export function DetailPage() {
                     const genreNames = movieDetails.genres.map(genre => genre.name);
 
                     await recommendationByGenres(genreNames);
+
+                    await recommendationBySimilar(movieDetails.title)
                 }
                 const check1 = await MovieService.checkIsWatchList(id, jwtToken);
                 setCheckIsWatchList(check1.data.data);
@@ -60,6 +59,14 @@ export function DetailPage() {
             const data = await MovieService.recommendationByGenres(genres);
             if (data) {
                 setRecomendation(data.data.data.content);
+            }
+        };
+
+        const recommendationBySimilar = async (title) => {
+            const data = await MovieService.recommendationBySimilar(title);
+            console.log("check", data);
+            if (data) {
+                setRecomendation2(data.data.data.result);
             }
         };
         fetchData();
@@ -176,14 +183,11 @@ export function DetailPage() {
         return <SkeletonLoader />;
     }
     if (loading == false && detail == null) {
-        return <div className="h-screen justify-center">Không tìm thấy dữ liệu lưu trữ</div>;
+        return <div className="h-screen text-center mt-10 text-2xl font-bold">Không tìm thấy dữ liệu này trong Database 😢</div>;
     }
     return (
         detail && (
-            <div className="">
-                {/* <div className="mx-auto text-black p-8 bg-cover bg-center sm:h-screen bg-no-repeat bg-slate-300" style={{
-                    backgroundImage: `url('https://image.tmdb.org/t/p/original${detail.backdrop_path}')`,
-                }}> */}
+            <div className="w-full">
                 <ToastContainer />
                 <div className="mx-auto text-black p-8 bg-cover bg-center  bg-slate-300" >
                     <div className="">
@@ -202,7 +206,7 @@ export function DetailPage() {
                                 <p className="text-sm mt-1">
                                     {detail.genres?.map(genre => genre.name).join(", ")}
                                 </p>
-                                <p className="text-sm mt-1">Rating: {detail.voteAverage}/10</p>
+                                <p className="text-sm mt-1">Rating: {detail.voteAverage.toFixed(2)}/10🌟</p>
 
                                 <div className={`flex items-center gap-4 mt-4 `}>
                                     <button
@@ -247,20 +251,20 @@ export function DetailPage() {
                     </div>
                 </div>
 
-                <div className="container mx-auto px-4 flex items-center justify-between py-4">
-                    <h1 className="text-2xl text-left font-bold text-black">
+                <div className=" p-4 flex items-center justify-between w-full">
+                    <h1 className="text-2xl  font-bold text-black">
                         Danh sách diễn viên
                     </h1>
-                    <Link to={`/castList/${detail.id}`} className="text-base text-left font-bold text-black hover:underline cursor-pointer">
+                    <Link to={`/castList/${detail.id}`} className="text-base font-bold text-black hover:underline cursor-pointer">
                         Xem tất cả
                     </Link>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
                     <CastCard CastList={detail.credits.cast.slice(0, 10)} />
                 </div>
-                <div className="container mx-auto px-4 flex items-center py-4">
+                <div className="container px-4 flex items-center py-4">
                     <h1 className="text-2xl text-left font-bold text-black">
-                        Recommendation
+                        Recommendation theo thể loại
                     </h1>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
@@ -271,9 +275,33 @@ export function DetailPage() {
                                     <FadeLoader />
                                 </div>
                             )
-                            : <MoviesCard movies={Recomendation} />
+                            : <MoviesCard movies={Recomendation.slice(5)} />
                     }
                 </div>
+
+
+                <div className="container px-4 flex items-center py-4">
+                    <h1 className="text-2xl text-left font-bold text-black">
+                        Recommendation phim tương tự
+                    </h1>
+                </div>
+
+                {
+                    Recomendation2 === null
+                        ? (
+                            <div className="h-60 inset-0 flex items-center justify-center bg-gray-100 ">
+                                <FadeLoader />
+                            </div>
+                        )
+                        : (
+                            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
+
+                                <MoviesCard movies={Recomendation.slice(0, 5)} />
+                            </div>
+                        )
+                }
+
+
                 <Review reviews={detail.reviews} newComment={newComment} newRating={newRating}
                     setNewComment={setNewComment} setNewRating={setNewRating} handleAddComment={handleAddComment} handleRemove={handleRemove}></Review>
             </div>

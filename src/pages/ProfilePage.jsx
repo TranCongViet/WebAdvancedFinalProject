@@ -132,12 +132,6 @@ export function ProfilePage() {
         { id: 3, label: 'Rating list', href: '#/profile' },
     ];
 
-    const user = {
-        name: "John Doe",
-        dob: "1990-01-01",
-        avatar: "https://th.bing.com/th/id/OIP.GvNakgya1kk5A6CFQM6Z4gHaHZ?rs=1&pid=ImgDetMain", // Avatar image URL
-    };
-
     const getContent = () => {
         if (selected === 1) {
             if (LoadingWatch) {
@@ -271,7 +265,7 @@ export function ProfilePage() {
             <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg flex items-center space-x-6">
                 <div className="w-32 h-32 rounded-full overflow-hidden">
                     <img
-                        src={user.avatar}
+                        src="https://antimatter.vn/wp-content/uploads/2022/11/hinh-anh-avatar-nam.jpg"
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />

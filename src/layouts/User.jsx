@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import {
     HomePage, NotFound, SignUpPage,
-    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage, SearchPage, LlmMovieSearch
+    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage, SearchPage, LlmMovieSearch, AiNavigate
 } from '../pages'
 import { Header, Footer } from '../components/layout'
 import { PrivateRoute } from '../components';
@@ -18,6 +18,7 @@ export function User() {
                 <Route path="/active-account" element={<ActiveAccountPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/llmMovieSearch" element={<LlmMovieSearch />} />
+                <Route path="/ainavigation" element={<AiNavigate />} />
                 <Route path="/person/:id" element={<CastDetailPage />} />
                 <Route path="/movie/:id" element={<DetailPage />} />
                 <Route path="/profile" element={

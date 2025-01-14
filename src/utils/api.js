@@ -1,3 +1,4 @@
+import { AiNavigate } from '../pages';
 import { API_URL, LLM_URL } from './config';
 import axios from 'axios';
 
@@ -304,6 +305,22 @@ export const MovieService = {
         }
         catch (error) {
             console.error("Error searching movies:", error);
+            throw error;
+        }
+    },
+    AiNavigate: async (query) => {
+        try {
+            const data = await axios.post(`${LLM_URL}/navigate/?llm_api_key=AIzaSyBDzzeUPb8DvFzNboDn4qA2BrzGOMNIZmU&query=${query}`, {
+                params: {
+                    llm_api_key: 'AIzaSyBDzzeUPb8DvFzNboDn4qA2BrzGOMNIZmU',
+                    query: query
+                }
+            });
+            console.log(data);
+            return data
+        }
+        catch (error) {
+            console.error("Error navigating movies:", error);
             throw error;
         }
     },

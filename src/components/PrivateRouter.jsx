@@ -32,7 +32,9 @@ export function PrivateRoute({ children }) {
             }
         }
     };
-    check();
+    if (jwtToken != null) {
+        check();
+    }
     return children;
 }
 
@@ -75,6 +77,8 @@ export function CheckUser({ children }) {
             }
         }
     };
-    check();
+    if (jwtToken != null) {
+        check();
+    }
     return children;
 }

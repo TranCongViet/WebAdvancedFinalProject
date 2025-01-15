@@ -225,6 +225,7 @@ export const MovieService = {
                     query: title
                 }
             });
+            console.log("Similar", data);
             return data
         }
         catch (error) {

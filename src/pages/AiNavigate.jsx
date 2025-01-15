@@ -26,12 +26,12 @@ export function AiNavigate() {
     const fetchDataMoviePage = async () => {
         try {
             const result = await MovieService.getMoviesByMongoID(navigate.params.movie_ids[0]);
-            //Navigate(`/movie/${id}`)
+            console.log("Toi can lay id", result);
+            Navigate(`/movie/${result.data.data.content[0].id}`)
         } catch (error) {
             console.error("Lỗi khi lấy dữ liệu:", error);
         }
     };
-
 
     if (navigate != null) {
         if (navigate.status == "500") {

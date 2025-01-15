@@ -62,11 +62,16 @@ export function DetailPage() {
             }
         };
 
+        // const getMovieByList = await MovieService.getMoviesByList(data.data.data.result);
+        // setMovies(getMovieByList.data.data.content);
+
         const recommendationBySimilar = async (title) => {
             const data = await MovieService.recommendationBySimilar(title);
             console.log("check", data);
             if (data) {
-                setRecomendation2(data.data.data.result);
+                const temp = await MovieService.getMoviesByList(data.data.data.result);
+                console.log("check temp", temp);
+                setRecomendation2(temp.data.data.content);
             }
         };
         fetchData();
@@ -262,27 +267,33 @@ export function DetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
                     <CastCard CastList={detail.credits.cast.slice(0, 10)} />
                 </div>
+
+
                 <div className="container px-4 flex items-center py-4">
                     <h1 className="text-2xl text-left font-bold text-black">
-                        Recommendation theo thể loại
+                        Gợi ý phim theo thể loại
                     </h1>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
-                    {
-                        Recomendation === null
-                            ? (
-                                <div className="h-screen inset-0 flex items-center justify-center bg-gray-100 ">
-                                    <FadeLoader />
-                                </div>
-                            )
-                            : <MoviesCard movies={Recomendation.slice(5)} />
-                    }
-                </div>
+
+                {
+                    Recomendation === null
+                        ? (
+                            <div className="h-60 inset-0 flex items-center justify-center bg-gray-100 ">
+                                <FadeLoader />
+                            </div>
+                        )
+                        : (
+                            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
+
+                                <MoviesCard movies={Recomendation.slice(5)} />
+                            </div>
+                        )
+                }
 
 
                 <div className="container px-4 flex items-center py-4">
                     <h1 className="text-2xl text-left font-bold text-black">
-                        Recommendation phim tương tự
+                        Gợi ý phim tương tự
                     </h1>
                 </div>
 
@@ -296,7 +307,7 @@ export function DetailPage() {
                         : (
                             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
 
-                                <MoviesCard movies={Recomendation.slice(0, 5)} />
+                                <MoviesCard movies={Recomendation2.slice(0, 5)} />
                             </div>
                         )
                 }

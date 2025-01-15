@@ -147,7 +147,7 @@ export function ProfilePage() {
                 return <p className="text-center min-h-72">Loading...</p>;
             }
             if (WatchList.length === 0) {
-                return <p className="text-center min-h-72">Danh sách phim rỗng</p>;
+                return <p className="text-center min-h-72">Danh sách watch list rỗng</p>;
             }
             return (
                 <div>
@@ -188,7 +188,7 @@ export function ProfilePage() {
                 return <p className="text-center min-h-72">Loading...</p>;
             }
             if (FavoriteList.length === 0) {
-                return <p className="text-center min-h-72">Danh sách phim rỗng</p>;
+                return <p className="text-center min-h-72">Danh sách phim yêu thích rỗng</p>;
             }
             return (
                 <div>
@@ -229,7 +229,7 @@ export function ProfilePage() {
                 return <p className="text-center min-h-72">Loading...</p>;
             }
             if (RatingList.length === 0) {
-                return <p className="text-center min-h-72">Danh sách phim rỗng</p>;
+                return <p className="text-center min-h-72">Danh sách đánh giá rỗng</p>;
             }
             return (
                 <div>

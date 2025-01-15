@@ -115,6 +115,7 @@ export function ForgotPasswordPage() {
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 placeholder="Nhập mã OTP"
                                 value={otp}
+                                required
                                 onChange={(e) => setOtp(e.target.value)}
                             />
                         </div>
@@ -128,6 +129,7 @@ export function ForgotPasswordPage() {
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 placeholder="Nhập mật khẩu mới"
                                 value={newPassword}
+                                required
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
                         </div>

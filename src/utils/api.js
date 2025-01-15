@@ -277,7 +277,7 @@ export const MovieService = {
             throw error;
         }
     },
-    filter: async (filterList, title) => {
+    filter: async (filterList, title, page) => {
         try {
             //"startDate": "2020-01-01",
             //"endDate": "2024-01-01",
@@ -289,6 +289,7 @@ export const MovieService = {
                     maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
                     startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
                     endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
+                    page: page
                 });
                 return data
             } else {
@@ -302,6 +303,7 @@ export const MovieService = {
                     maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
                     startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
                     endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
+                    page: page
                 });
                 return data
             }

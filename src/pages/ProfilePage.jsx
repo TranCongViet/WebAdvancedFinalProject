@@ -3,6 +3,10 @@ import { MovieService } from '../utils/api';
 import { Link } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { toast } from "react-toastify";
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS của react-toastify
+
 export function ProfilePage() {
     const [selected, setSelected] = useState(1);
     const { jwtToken } = useAuth();
@@ -81,6 +85,7 @@ export function ProfilePage() {
             const response = await MovieService.removeWatchList(movieId, jwtToken);
             if (response.data.status === "success") {
                 getAllMovieWatchList();
+                toast.success("Xóa phim thành công !");
             } else {
                 console.error("Failed to remove movie");
             }
@@ -93,11 +98,13 @@ export function ProfilePage() {
             const response = await MovieService.removeFavoriteList(movieId, jwtToken);
             if (response.data.status === "success") {
                 getAllMovieFavoriteList();
+                toast.success("Xóa phim thành công !");
             } else {
                 console.error("Failed to remove movie");
             }
         } catch (error) {
             getAllMovieFavoriteList();
+            toast.success("Xóa phim thành công !");
             console.error("Error removing movie:", error);
         }
     };
@@ -106,11 +113,13 @@ export function ProfilePage() {
             const response = await MovieService.removeRatingList(movieId, jwtToken);
             if (response.data.status === "success") {
                 getAllMovieRatingList();
+                toast.success("Xóa phim thành công !");
             } else {
                 console.error("Failed to remove movie");
             }
         } catch (error) {
             getAllMovieRatingList();
+            toast.success("Xóa phim thành công !");
             console.error("Error removing movie:", error);
         }
     };
@@ -300,6 +309,7 @@ export function ProfilePage() {
             </div>
 
             <div className="mt-6">
+                <ToastContainer></ToastContainer>
                 {getContent()}
             </div>
         </div>

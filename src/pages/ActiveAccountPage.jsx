@@ -115,6 +115,7 @@ export function ActiveAccountPage() {
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 placeholder="Nhập mã OTP"
                                 value={otp}
+                                required
                                 onChange={(e) => setOtp(e.target.value)}
                             />
                         </div>
@@ -128,6 +129,7 @@ export function ActiveAccountPage() {
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 placeholder="Nhập mật khẩu"
                                 value={password}
+                                required
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>

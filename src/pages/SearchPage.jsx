@@ -6,7 +6,7 @@ import { MovieService } from '../utils/api';
 import { FadeLoader } from 'react-spinners';
 
 export function SearchPage() {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [movies, setMovies] = useState([]);
     const [maxPage, setMaxPage] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -49,13 +49,17 @@ export function SearchPage() {
                 setLoading(false);
             }
         };
-        getSearchResult();
+        const checkFilter = searchParams.get("filter") ? handleFilter() : getSearchResult();
+        //getSearchResult();
     }, [searchParams]);
 
     const handleFilter = async () => {
         const filter = async () => {
             setLoading(true);
-            const data = await MovieService.filter(filters, searchParams.get("query"));
+            // Cập nhật URL với tham số filter=true
+            searchParams.set("filter", "true");
+            setSearchParams(searchParams);
+            const data = await MovieService.filter(filters, searchParams.get("query"), searchParams.get("page"));
             setMovies(data.data.data.content)
             setMaxPage(data.data.data.totalPages);
             console.log("CHECK PAGE", data);
@@ -186,7 +190,8 @@ export function SearchPage() {
                                             </p>
                                         </div>
                                     </div>
-                                ))}
+                                ))
+                                }
                                 <div className="mx-auto mt-4">
                                     <Pagination pageLimit={movies.length > 0 ? maxPage : 1} />
                                 </div>

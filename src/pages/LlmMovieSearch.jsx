@@ -2,6 +2,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SearchBar } from "../components";
 import { MovieService } from '../utils/api';
+import { FadeLoader } from 'react-spinners';
 
 export function LlmMovieSearch() {
     const [searchParams] = useSearchParams();
@@ -28,7 +29,7 @@ export function LlmMovieSearch() {
                 Tìm kiếm: <span className="font-semibold text-black">{searchParams.get("query")}</span>
             </div>
             {
-                loading ? (<div className="h-screen">Loading....</div>
+                loading ? (<div className="h-screen flex justify-center mt-5"><FadeLoader></FadeLoader></div>
                 ) :
                     <div className="space-y-4">
                         {movies.length === 0 ? (

@@ -4,10 +4,11 @@ import {
     LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage, SearchPage, LlmMovieSearch, AiNavigate, CastListPage
 } from '../pages'
 import { Header, Footer } from '../components/layout'
-import { PrivateRoute, CheckLogin } from '../components';
+import { PrivateRoute, CheckLogin, ScrollToTopButton } from '../components';
 export function User() {
     return (
         <div>
+            <ScrollToTopButton />
             <Header />
             <Routes>
                 <Route path="/" element={<HomePage />} />

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from 'react-router-dom';
 import { FadeLoader } from 'react-spinners';
 import { MovieService } from '../utils/api';
 

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { FadeLoader } from 'react-spinners';
-import { useAuth } from '../context/authcontext.jsx';
+import { useAuth } from '../context/AuthContext';
 
 export function SignUpPage() {
     const { register, handleSubmit, formState: { errors }, watch } = useForm();

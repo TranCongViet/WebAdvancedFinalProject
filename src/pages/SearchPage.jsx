@@ -39,7 +39,7 @@ export function SearchPage() {
             const data = await MovieService.searchMovies(query, page, filters);
             if (data && data.data.data.content) {
                 setMovies(data.data.data.content);
-                setMaxPage(data.data.data.totalPages - 1);
+                setMaxPage(data.data.data.totalPages);
             }
             setFilters({
                 genre: "",
@@ -71,6 +71,23 @@ export function SearchPage() {
         };
         filter();
     };
+
+    const handleFilterButton = async () => {
+        const filter = async () => {
+            setLoading(true);
+            // Cập nhật URL với tham số filter=true
+            searchParams.set("filter", "true");
+            searchParams.set("page", "1");
+            searchParams.set("query", filters.title);
+            setSearchParams(searchParams);
+            const data = await MovieService.filter(filters, searchParams.get("page"));
+            setMovies(data.data.data.content)
+            setMaxPage(data.data.data.totalPages);
+            setLoading(false);
+        };
+        filter();
+    };
+
     // Xử lý thay đổi bộ lọc
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -183,7 +200,7 @@ export function SearchPage() {
                     />
                 </div>
                 <button
-                    onClick={handleFilter}
+                    onClick={handleFilterButton}
                     className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
                 >
                     Áp dụng bộ lọc

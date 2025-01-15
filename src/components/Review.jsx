@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 export function Review({ reviews, newComment, newRating, setNewComment, setNewRating, handleAddComment, handleRemove }) {
 

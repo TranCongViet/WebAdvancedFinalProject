@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { FadeLoader } from 'react-spinners';
-import { useAuth } from '../context/authcontext.jsx';
+import { useAuth } from '../context/AuthContext';
 
 export function LoginPage() {
     const { register, handleSubmit, formState: { errors } } = useForm();

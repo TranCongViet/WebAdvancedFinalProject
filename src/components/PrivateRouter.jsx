@@ -32,6 +32,7 @@ export function PrivateRoute({ children }) {
             }
         }
     };
+    check();
     return children;
 }
 
@@ -49,6 +50,7 @@ export function CheckUser({ children }) {
     const { jwtToken, logout } = useAuth();
 
     const check = async () => {
+        console.log("check");
         try {
             // Gọi API và truyền JWT vào header
             const response = await axios.get(`${API_URL}/user/profile`, {
@@ -62,6 +64,7 @@ export function CheckUser({ children }) {
 
         } catch (error) {
             // Kiểm tra lỗi từ server
+            console.log("test", error);
             if (error.response) {
                 const { status, message } = error.response.data;
 
@@ -72,6 +75,6 @@ export function CheckUser({ children }) {
             }
         }
     };
-
+    check();
     return children;
 }

@@ -23,29 +23,46 @@ export function ProfilePage() {
     useEffect(() => {
         const fetchProfile = async () => {
             setLoading(true);
-            const data = await MovieService.getProfile(jwtToken);
-            setProfile(data.data.data);
-            setLoading(false);
+            try {
+                const data = await MovieService.getProfile(jwtToken);
+                setProfile(data.data.data);
+            }
+            catch (error) {
+                console.error("Lỗi khi gọi API: ", error);
+            }
+            finally {
+                setLoading(false);
+            }
         };
         fetchProfile();
     }, []);
 
     const getAllMovieRatingList = async () => {
-        setLoadingRating(true);
-        const data = await MovieService.getAllMovieRatingList(jwtToken);  // Detail
-        if (data) {
-            setRatingList(data.data.content);
+        try {
+            setLoadingRating(true);
+            const data = await MovieService.getAllMovieRatingList(jwtToken);  // Detail
+            if (data) {
+                setRatingList(data.data.content);
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+        } finally {
+            setLoadingRating(false);
         }
-        setLoadingRating(false);
     }
     const getAllMovieFavoriteList = async () => {
-        setLoadingFavorite(true);
-        const data = await MovieService.getAllMovieFavoriteList(jwtToken);  // Detail
-        if (data) {
-            setFavoriteList(data.content);
+        try {
+            setLoadingFavorite(true);
+            const data = await MovieService.getAllMovieFavoriteList(jwtToken);  // Detail
+            if (data) {
+                setFavoriteList(data.content);
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+            setFavoriteList([]);
+        } finally {
+            setLoadingFavorite(false);
         }
-        setFavoriteList([]);
-        setLoadingFavorite(false);
     }
     const getAllMovieWatchList = async () => {
         try {

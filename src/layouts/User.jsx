@@ -46,6 +46,8 @@ export function User() {
                         <ProfilePage />
                     </PrivateRoute>
                 } />
+                <Route path="/profile" element={<ProfilePage />} />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

@@ -236,6 +236,15 @@ export const MovieService = {
     },
     searchMovies: async (query, page) => {
         try {
+            if (query === "") {
+                const data = await axios.get(`${API_URL}/movie/search`, {
+                    params: {
+                        title: "",
+                        page: page
+                    }
+                });
+                return data;
+            }
             const data = await axios.get(`${API_URL}/movie/search`, {
                 params: {
                     title: query,
@@ -277,36 +286,31 @@ export const MovieService = {
             throw error;
         }
     },
-    filter: async (filterList, title, page) => {
+    filter: async (filterList, page) => {
         try {
-            //"startDate": "2020-01-01",
-            //"endDate": "2024-01-01",
-            if (filterList.genre.length == 0) { // filterList.genre === "All Genres"
-                const data = await axios.post(`${API_URL}/movie/filter`, {
-                    type: "OR",
-                    title: title,
-                    minVote: filterList.minVote > 0 ? parseInt(filterList.minVote) : 0,
-                    maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
-                    startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
-                    endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
-                    page: page
-                });
-                return data
-            } else {
-                const genre =
-                    [filterList.genre];
-                const data = await axios.post(`${API_URL}/movie/filter`, {
-                    type: "OR",
-                    genres: genre,
-                    title: title,
-                    minVote: filterList.minVote > 0 ? parseInt(filterList.minVote) : 0,
-                    maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
-                    startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
-                    endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
-                    page: page
-                });
-                return data
+            let genres = filterList.genres ?? [];
+            if (filterList.genre && filterList.genre !== "All Genres" && filterList.genre !== "") {
+                genres.push(filterList.genre);
             }
+
+            let keywords = filterList.keywords && filterList.keywords !== "" ? [filterList.keywords] : [];
+
+            let collection = filterList.collection == "movies" ? "" : filterList.collection;
+
+            const data = await axios.post(`${API_URL}/movie/filter`, {
+                type: "OR",
+                title: filterList.title,
+                keywords: keywords,
+                genres: genres,
+                collection: collection,
+                minVote: filterList.minVote > 0 ? parseInt(filterList.minVote) : 0,
+                maxVote: filterList.maxVote < 10 ? parseInt(filterList.maxVote) : 10,
+                startDate: filterList.startDate != "" ? filterList.startDate : "1000-01-01",
+                endDate: filterList.endDate != "" ? filterList.endDate : "3000-01-01",
+                page: page - 1
+            });
+            console.log("Dữ liệu out", data);
+            return data
         }
         catch (error) {
             console.error("Error filtering movies:", error);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FadeLoader } from 'react-spinners';
 import { MovieService } from '../utils/api';
-
+import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
 export function CastDetailPage() {
@@ -102,7 +102,9 @@ export function CastDetailPage() {
                                                                                     <h2 className="text-xl font-bold mb-2">{actor.release_date}</h2>
                                                                                     <ul>
                                                                                         <li className="mb-2">
-                                                                                            <span className="font-bold">{actor.title}</span>
+                                                                                            <Link to={`/movie/${actor.id}`}>
+                                                                                                <span className="font-bold hover:underline">{actor.title}</span>
+                                                                                            </Link>
                                                                                         </li>
                                                                                         <li>
                                                                                             {/* <span className="font-bold">Character</span> */}

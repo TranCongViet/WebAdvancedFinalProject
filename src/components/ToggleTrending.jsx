@@ -6,7 +6,7 @@ export function ToggleTrending({ active, setActive }) {
             </h1>
             <div className="relative flex items-center border ml-2 border-gray-300 rounded-full w-48 py-2 bg-white">
                 <div
-                    className={`absolute top-0 h-full w-1/2 bg-blue-900 rounded-full transition-transform duration-300 transform ${active === "week" ? "translate-x-full" : "translate-x-0"
+                    className={`absolute top-0 h-full w-1/2 bg-blue-600 rounded-full transition-transform duration-300 transform ${active === "week" ? "translate-x-full" : "translate-x-0"
                         }`}
                 ></div>
                 <button

@@ -16,10 +16,6 @@ export function SearchBar() {
     const handleSearch = async (e) => {
         e.preventDefault();
 
-        if (!query.trim()) {
-            alert("Please enter a search term.");
-            return;
-        }
         if (selectedOption === "Search") {
             navigate(`/search?query=${query}&page=1`);
         } else if (selectedOption === "LLM Movie Search") {
@@ -77,13 +73,12 @@ export function SearchBar() {
                     placeholder="Search ..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    required
                 />
             </div>
 
             <button
                 type="submit"
-                className="w-full md:w-auto h-10 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium rounded-lg focus:ring-4"
+                className="w-full md:w-auto h-10 px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white text-sm font-medium rounded-lg focus:ring-4"
             >
                 Search
             </button>

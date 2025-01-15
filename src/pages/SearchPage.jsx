@@ -14,6 +14,9 @@ export function SearchPage() {
     // State cho bộ lọc
     const [filters, setFilters] = useState({
         genre: "",
+        title: searchParams.get("query") || "",
+        collection: "",
+        keywords: "",
         minVote: 0,
         maxVote: 10,
         startDate: "",
@@ -33,21 +36,22 @@ export function SearchPage() {
             const page = searchParams.get("page") || "1";
             const query = searchParams.get("query");
             setLoading(true);
-            if (query) {
-                const data = await MovieService.searchMovies(query, page, filters);
-                if (data && data.data.data.content) {
-                    setMovies(data.data.data.content);
-                    setMaxPage(data.data.data.totalPages - 1);
-                }
-                setFilters({
-                    genre: [],
-                    minVote: 0,
-                    maxVote: 10,
-                    startDate: "",
-                    endDate: "",
-                });
-                setLoading(false);
+            const data = await MovieService.searchMovies(query, page, filters);
+            if (data && data.data.data.content) {
+                setMovies(data.data.data.content);
+                setMaxPage(data.data.data.totalPages - 1);
             }
+            setFilters({
+                genre: "",
+                title: searchParams.get("query") || "",
+                collection: "",
+                keywords: "",
+                minVote: 0,
+                maxVote: 10,
+                startDate: "",
+                endDate: "",
+            });
+            setLoading(false);
         };
         const checkFilter = searchParams.get("filter") ? handleFilter() : getSearchResult();
         //getSearchResult();
@@ -58,11 +62,11 @@ export function SearchPage() {
             setLoading(true);
             // Cập nhật URL với tham số filter=true
             searchParams.set("filter", "true");
+            searchParams.set("query", filters.title);
             setSearchParams(searchParams);
-            const data = await MovieService.filter(filters, searchParams.get("query"), searchParams.get("page"));
+            const data = await MovieService.filter(filters, searchParams.get("page"));
             setMovies(data.data.data.content)
             setMaxPage(data.data.data.totalPages);
-            console.log("CHECK PAGE", data);
             setLoading(false);
         };
         filter();
@@ -92,6 +96,48 @@ export function SearchPage() {
                         ))}
                     </select>
                 </div>
+
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Key search</label>
+                    <input
+                        type="text"
+                        name="title"
+                        value={filters.title}
+                        onChange={handleFilterChange}
+                        className="block w-full p-2 border rounded"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Keywords</label>
+                    <input
+                        type="text"
+                        name="keywords"
+                        value={filters.keywords}
+                        onChange={handleFilterChange}
+                        className="block w-full p-2 border rounded"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Collection</label>
+                    <select className="block w-full p-2 border rounded" name="collection" onChange={handleFilterChange} >
+                        {[
+                            { id: "movies", name: "All Movies" },
+                            { id: "movies_trending_week", name: "Trending This Week" },
+                            { id: "movies_trending_day", name: "Trending Today" },
+                            { id: "movies_upcoming", name: "Upcoming Movies" },
+                            { id: "movies_top_rated", name: "Top Rated Movies" },
+                            { id: "movies_popular", name: "Popular Movies" },
+                            { id: "movies_now_playing", name: "Now Playing" },
+                        ].map((option) => (
+                            <option key={option.id} value={option.id}>
+                                {option.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Rating tối thiểu</label>
                     <input

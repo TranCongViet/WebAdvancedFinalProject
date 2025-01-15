@@ -23,9 +23,11 @@ export function MovieListPage() {
                 setTitle("xu hướng trong ngày")
             } else if (name === "trending_week") {
                 data = await MovieService.getMoviesTrendingWeek(page);
+                setMaxPage(data.data.data.totalPages);
                 setTitle("xu hướng trong tuần")
             } else if (name === "popular") {
                 data = await MovieService.getMoviesPopular(page);
+                setMaxPage(data.data.data.totalPages);
                 setTitle("phim phổ biến")
             } else {
                 setMovies([]);

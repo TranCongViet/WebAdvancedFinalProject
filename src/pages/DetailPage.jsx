@@ -49,6 +49,7 @@ export function DetailPage() {
         const fetchMovieDetails = async (id) => {
             const data = await MovieService.fetchGetMoviesByTMDB_id(id);
             if (data) {
+                console.log("Check detail", data.data);
                 setDetail(data.data);
                 return data.data;
             }
@@ -62,8 +63,6 @@ export function DetailPage() {
             }
         };
 
-        // const getMovieByList = await MovieService.getMoviesByList(data.data.data.result);
-        // setMovies(getMovieByList.data.data.content);
 
         const recommendationBySimilar = async (title) => {
             const data = await MovieService.recommendationBySimilar(title);
@@ -212,6 +211,7 @@ export function DetailPage() {
                                     {detail.genres?.map(genre => genre.name).join(", ")}
                                 </p>
                                 <p className="text-sm mt-1">Rating: {detail.voteAverage.toFixed(2)}/10🌟</p>
+                                <p className="text-sm mt-1">Keywords: {detail.keywords[0].name}, {detail.keywords[1].name}, {detail.keywords[2].name}</p>
 
                                 <div className={`flex items-center gap-4 mt-4 `}>
                                     <button

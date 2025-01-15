@@ -1,18 +1,27 @@
 import { Routes, Route } from 'react-router-dom';
 import {
     HomePage, NotFound, SignUpPage,
-    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage, SearchPage, LlmMovieSearch, AiNavigate, CastListPage
+    LoginPage, ForgotPasswordPage, ActiveAccountPage, DetailPage, CastDetailPage, ProfilePage, SearchPage, LlmMovieSearch, AiNavigate, CastListPage, MovieListPage
 } from '../pages'
 import { Header, Footer } from '../components/layout'
-import { PrivateRoute, CheckLogin, ScrollToTopButton } from '../components';
+import { PrivateRoute, CheckLogin, CheckUser, ScrollToTopButton, ScrollToTop } from '../components';
 export function User() {
     return (
         <div>
             <ScrollToTopButton />
+            <ScrollToTop />
             <Header />
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/home" element={<HomePage />} />
+                <Route path="/" element={
+                    <CheckUser>
+                        <HomePage />
+                    </CheckUser>
+                } />
+                <Route path="/home" element={
+                    <CheckUser>
+                        <HomePage />
+                    </CheckUser>
+                } />
                 <Route path="/signUp" element={
                     <CheckLogin>
                         <SignUpPage />
@@ -29,6 +38,7 @@ export function User() {
                 <Route path="/llmMovieSearch" element={<LlmMovieSearch />} />
                 <Route path="/ainavigation" element={<AiNavigate />} />
                 <Route path="/person/:id" element={<CastDetailPage />} />
+                <Route path="/movieList" element={<MovieListPage />} />
                 <Route path="/castList/:id" element={<CastListPage />} />
                 <Route path="/movie/:id" element={<DetailPage />} />
                 <Route path="/profile" element={

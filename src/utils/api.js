@@ -385,6 +385,19 @@ export const MovieService = {
             throw error;
         }
     },
+    getListMovieByMongoID: async (list) => {
+        try {
+            const data = await axios.post(`${API_URL}/movie/list`, {
+                ids: list,
+                size: 10
+            });
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching list movies by mongoID:", error);
+            throw error;
+        }
+    },
     // Lấy thông tin diễn viên theo MongoID
     getCastByMongoID: async (mongoID) => {
         try {
@@ -415,5 +428,38 @@ export const MovieService = {
             console.error("Error fetching profile:", error);
             throw error;
         }
-    }
+    },
+    // Get movies theo trending day
+    getMoviesTrendingDay: async (page) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie/trending-day?page=${page}&size=20`);
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching movies trending day:", error);
+            throw error;
+        }
+    },
+    // Get movies theo trending week
+    getMoviesTrendingWeek: async (page) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie/trending-week?page=${page}&size=20`);
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching movies trending week:", error);
+            throw error;
+        }
+    },
+    // Get movies theo popular
+    getMoviesPopular: async (page) => {
+        try {
+            const data = await axios.get(`${API_URL}/movie/popular?page=${page}&size=20`);
+            return data
+        }
+        catch (error) {
+            console.error("Error fetching movies popular:", error);
+            throw error;
+        }
+    },
 }

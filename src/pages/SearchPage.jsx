@@ -1,7 +1,7 @@
 import { useSearchParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SearchBar } from "../components/SearchBar";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "../components";
 import { MovieService } from '../utils/api';
 import { FadeLoader } from 'react-spinners';
 

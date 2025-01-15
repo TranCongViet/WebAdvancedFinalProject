@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SearchBar, ToggleTrending, SkeletonCard, MoviesCard, TrailerCard, TrailerDetail } from "../components";
 import { MovieService } from "../utils/api"
-
+import { Link } from "react-router-dom";
 export function HomePage() {
     const [movies, setMovies] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
@@ -49,24 +49,33 @@ export function HomePage() {
     return (
         <div className="bg-gray-100">
             <SearchBar />
-            <ToggleTrending active={active} setActive={setActive} />
-
+            <div className="flex items-center justify-between w-full">
+                <ToggleTrending active={active} setActive={setActive} />
+                <Link to={`/movieList?name=${active == "day" ? "trending_day" : "trending_week"}`} className="font-bold text-black hover:underline cursor-pointer">
+                    Xem tất cả
+                </Link>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
                 {loading
                     ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
                     : <MoviesCard movies={movies} />}
             </div>
 
-            <div className="container px-4 flex items-center py-4">
+            <div className="flex items-center justify-between w-full p-4">
                 <h1 className="text-2xl text-left font-bold text-black">
                     Popular Movies
                 </h1>
+                <Link to={`/movieList?name=popular`} className="font-bold text-black hover:underline cursor-pointer">
+                    Xem tất cả
+                </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 pb-5">
                 {loading1
                     ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
                     : <MoviesCard movies={popularMovies} />}
             </div>
+
+
 
             <div className="container px-4 flex items-center py-4">
                 <h1 className="text-2xl text-left font-bold text-black">

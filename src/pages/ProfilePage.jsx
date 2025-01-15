@@ -23,46 +23,29 @@ export function ProfilePage() {
     useEffect(() => {
         const fetchProfile = async () => {
             setLoading(true);
-            try {
-                const data = await MovieService.getProfile(jwtToken);
-                setProfile(data.data.data);
-            }
-            catch (error) {
-                console.error("Lỗi khi gọi API: ", error);
-            }
-            finally {
-                setLoading(false);
-            }
+            const data = await MovieService.getProfile(jwtToken);
+            setProfile(data.data.data);
+            setLoading(false);
         };
         fetchProfile();
     }, []);
 
     const getAllMovieRatingList = async () => {
-        try {
-            setLoadingRating(true);
-            const data = await MovieService.getAllMovieRatingList(jwtToken);  // Detail
-            if (data) {
-                setRatingList(data.data.content);
-            }
-        } catch (error) {
-            console.error("Lỗi khi gọi API: ", error);
-        } finally {
-            setLoadingRating(false);
+        setLoadingRating(true);
+        const data = await MovieService.getAllMovieRatingList(jwtToken);  // Detail
+        if (data) {
+            setRatingList(data.data.content);
         }
+        setLoadingRating(false);
     }
     const getAllMovieFavoriteList = async () => {
-        try {
-            setLoadingFavorite(true);
-            const data = await MovieService.getAllMovieFavoriteList(jwtToken);  // Detail
-            if (data) {
-                setFavoriteList(data.content);
-            }
-        } catch (error) {
-            console.error("Lỗi khi gọi API: ", error);
-            setFavoriteList([]);
-        } finally {
-            setLoadingFavorite(false);
+        setLoadingFavorite(true);
+        const data = await MovieService.getAllMovieFavoriteList(jwtToken);  // Detail
+        if (data) {
+            setFavoriteList(data.content);
         }
+        setFavoriteList([]);
+        setLoadingFavorite(false);
     }
     const getAllMovieWatchList = async () => {
         try {
@@ -274,7 +257,7 @@ export function ProfilePage() {
             <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg flex items-center space-x-6">
                 <div className="w-32 h-32 rounded-full overflow-hidden">
                     <img
-                        src="https://antimatter.vn/wp-content/uploads/2022/11/hinh-anh-avatar-nam.jpg"
+                        src="https://th.bing.com/th/id/R.910cabc7d55bb965d6c42571a2b7973a?rik=HRpRhGm%2fnmbF8g&pid=ImgRaw&r=0"
                         alt="Avatar"
                         className="w-full h-full object-cover"
                     />

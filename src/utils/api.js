@@ -239,7 +239,7 @@ export const MovieService = {
                 const data = await axios.get(`${API_URL}/movie/search`, {
                     params: {
                         title: "",
-                        page: page
+                        page: page - 1
                     }
                 });
                 return data;
@@ -247,7 +247,7 @@ export const MovieService = {
             const data = await axios.get(`${API_URL}/movie/search`, {
                 params: {
                     title: query,
-                    page: page
+                    page: page - 1
                 }
             });
             return data

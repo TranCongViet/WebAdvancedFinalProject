@@ -49,7 +49,7 @@ export function HomePage() {
     return (
         <div className="bg-gray-100">
             <SearchBar />
-            <div className="flex items-center justify-between w-full">
+            <div className="flex items-center justify-between w-full p-4">
                 <ToggleTrending active={active} setActive={setActive} />
                 <Link to={`/movieList?name=${active == "day" ? "trending_day" : "trending_week"}`} className="font-bold text-black hover:underline cursor-pointer">
                     Xem tất cả

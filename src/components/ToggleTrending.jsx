@@ -1,6 +1,6 @@
 export function ToggleTrending({ active, setActive }) {
     return (
-        <div className="container p-4 flex items-center">
+        <div className="container flex items-center">
             <h1 className="text-2xl text-left font-bold text-black">
                 Trending
             </h1>

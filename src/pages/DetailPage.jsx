@@ -211,8 +211,11 @@ export function DetailPage() {
                                     {detail.genres?.map(genre => genre.name).join(", ")}
                                 </p>
                                 <p className="text-sm mt-1">Rating: {detail.voteAverage.toFixed(2)}/10🌟</p>
-                                <p className="text-sm mt-1">Keywords: {detail.keywords[0].name}, {detail.keywords[1].name}, {detail.keywords[2].name}</p>
-
+                                {detail.keywords.length > 3 && (
+                                    <p className="text-sm mt-1">
+                                        Keywords: {detail.keywords[0].name}, {detail.keywords[1].name}, {detail.keywords[2].name}
+                                    </p>
+                                )}
                                 <div className={`flex items-center gap-4 mt-4 `}>
                                     <button
                                         className={`flex items-center px-4 py-2 text-white rounded-full focus:outline-none ${!jwtToken ? "hidden" : ""} ${jwtToken
